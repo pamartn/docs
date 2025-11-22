@@ -9,61 +9,37 @@
   },
   "favicon": "/favicon.ico",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Documentation",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "authentication"
-            ]
-          },
-          {
-            "group": "Core concepts",
-            "pages": [
-              "concepts/quotas",
-              "concepts/rate-limits",
-              "concepts/error-handling"
-            ]
-          }
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart"
         ]
       },
       {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoints",
-            "pages": [
-              "api-reference/endpoint/get-posts",
-              "api-reference/endpoint/get-profile"
-            ]
-          }
+        "group": "Core Concepts",
+        "pages": [
+          "concepts/quotas",
+          "concepts/rate-limits",
+          "concepts/error-handling"
+        ]
+      },
+      {
+        "group": "Endpoints",
+        "pages": [
+          "api-reference/endpoint/get-posts",
+          "api-reference/endpoint/get-profile"
         ]
       }
     ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Dashboard",
-          "href": "https://your-domain.com/dashboard",
-          "icon": "chart-line"
-        },
-        {
-          "anchor": "GitHub",
-          "href": "https://github.com/yourusername/fetchin",
-          "icon": "github"
-        }
-      ]
-    }
+    "anchors": [
+      {
+        "name": "Dashboard",
+        "url": "https://your-domain.com/dashboard",
+        "icon": "chart-line"
+      }
+    ]
   },
   "navbar": {
     "links": [
@@ -87,11 +63,5 @@
      "perplexity",
      "cursor"
    ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/fetchin",
-      "github": "https://github.com/yourusername/fetchin"
-    }
   }
 }
