@@ -1,0 +1,274 @@
+---
+title: "Get Profile"
+api: "GET /api/v1/profile"
+description: "Get detailed information about a LinkedIn profile"
+---
+
+## Endpoint
+
+```
+GET /api/v1/profile
+```
+
+## Authentication
+
+Include your API key in the request header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+## Parameters
+
+<ParamField query="profileUrlOrUrn" type="string" required>
+  LinkedIn profile URL or URN.
+  
+  Examples:
+  - `https://www.linkedin.com/in/username`
+  - `urn:li:member:123456789`
+</ParamField>
+
+## Response
+
+<ResponseField name="profile" type="object">
+  LinkedIn profile information
+
+<Expandable title="Profile object">
+  <ResponseField name="urn" type="string">
+    Unique profile identifier
+  </ResponseField>
+  
+  <ResponseField name="firstName" type="string">
+    Profile first name
+  </ResponseField>
+  
+  <ResponseField name="lastName" type="string">
+    Profile last name
+  </ResponseField>
+  
+  <ResponseField name="headline" type="string">
+    Professional headline
+  </ResponseField>
+  
+  <ResponseField name="location" type="string">
+    Geographic location
+  </ResponseField>
+  
+  <ResponseField name="profilePictureUrl" type="string">
+    Profile picture URL
+  </ResponseField>
+  
+  <ResponseField name="about" type="string">
+    About/summary section
+  </ResponseField>
+  
+  <ResponseField name="experiences" type="array">
+    Work experience history
+    
+<Expandable title="Experience object">
+      <ResponseField name="title" type="string">
+        Job title
+      </ResponseField>
+      
+      <ResponseField name="company" type="string">
+        Company name
+      </ResponseField>
+      
+      <ResponseField name="startDate" type="string">
+        Start date (YYYY-MM format)
+      </ResponseField>
+      
+      <ResponseField name="endDate" type="string">
+        End date (YYYY-MM format, null if current)
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+  
+  <ResponseField name="education" type="array">
+    Education history
+    
+    <Expandable title="Education object">
+      <ResponseField name="school" type="string">
+        School/University name
+      </ResponseField>
+      
+      <ResponseField name="degree" type="string">
+        Degree type and field
+      </ResponseField>
+      
+      <ResponseField name="startDate" type="string">
+        Start year
+      </ResponseField>
+      
+      <ResponseField name="endDate" type="string">
+        End year
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+</Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://your-domain.com/api/v1/profile?profileUrlOrUrn=https://www.linkedin.com/in/williamhgates" \
+  -H "X-API-Key: your-api-key-here"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://your-domain.com/api/v1/profile?profileUrlOrUrn=https://www.linkedin.com/in/williamhgates',
+  {
+    headers: {
+      'X-API-Key': 'your-api-key-here'
+    }
+  }
+);
+
+const profile = await response.json();
+console.log(profile);
+```
+
+```python Python
+import requests
+
+headers = {
+    'X-API-Key': 'your-api-key-here'
+}
+
+params = {
+    'profileUrlOrUrn': 'https://www.linkedin.com/in/williamhgates'
+}
+
+response = requests.get(
+    'https://your-domain.com/api/v1/profile',
+    headers=headers,
+    params=params
+)
+
+profile = response.json()
+print(profile)
+```
+
+```php PHP
+<?php
+
+$apiKey = 'your-api-key-here';
+$profileUrl = 'https://www.linkedin.com/in/williamhgates';
+
+$url = "https://your-domain.com/api/v1/profile?profileUrlOrUrn=" . urlencode($profileUrl);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-API-Key: ' . $apiKey
+]);
+
+$response = curl_exec($ch);
+$profile = json_decode($response, true);
+
+curl_close($ch);
+print_r($profile);
+?>
+```
+
+</CodeGroup>
+
+## Example Response
+
+```json
+{
+  "urn": "urn:li:member:987654321",
+  "firstName": "William",
+  "lastName": "Gates",
+  "headline": "Co-chair, Bill & Melinda Gates Foundation",
+  "location": "Seattle, Washington, United States",
+  "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+  "about": "Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.",
+  "experiences": [
+    {
+      "title": "Co-chair",
+      "company": "Bill & Melinda Gates Foundation",
+      "startDate": "2000-01",
+      "endDate": null
+    },
+    {
+      "title": "Co-founder",
+      "company": "Microsoft",
+      "startDate": "1975-04",
+      "endDate": "2020-03"
+    }
+  ],
+  "education": [
+    {
+      "school": "Harvard University",
+      "degree": "Bachelor's degree, Computer Science",
+      "startDate": "1973",
+      "endDate": "1975"
+    }
+  ]
+}
+```
+
+## Error Responses
+
+<ResponseExample>
+```json 400 Bad Request
+{
+  "error": "Missing profileUrlOrUrn parameter"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Failed to fetch LinkedIn data"
+}
+```
+</ResponseExample>
+
+## Notes
+
+<Info>
+  This endpoint counts as 1 request toward your monthly quota.
+</Info>
+
+<Warning>
+  Profile data is fetched in real-time from LinkedIn. Response times may vary.
+</Warning>
+
+<Tip>
+  Cache profile data for frequently accessed profiles to optimize quota usage.
+</Tip>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Lead enrichment" icon="user-plus">
+    Enhance your CRM with up-to-date LinkedIn profile data
+  </Card>
+  <Card title="Recruitment" icon="briefcase">
+    Build candidate profiles from LinkedIn data
+  </Card>
+  <Card title="Research" icon="magnifying-glass">
+    Analyze professional backgrounds and career paths
+  </Card>
+  <Card title="Verification" icon="shield-check">
+    Verify professional credentials and work history
+  </Card>
+</CardGroup>
+

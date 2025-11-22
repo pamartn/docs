@@ -1,0 +1,127 @@
+---
+title: "Quotas & Plans"
+description: "Understanding request quotas and plan limits"
+---
+
+## How Quotas Work
+
+Fetchin uses a quota system to track your API usage. Each API request consumes one request from your quota.
+
+### Request Counting
+
+- ✅ **Successful requests** - Count toward your quota
+- ❌ **Failed requests** (4xx, 5xx errors) - Also count toward your quota
+- 🔄 **Quota renewal** - Happens automatically on your renewal date
+
+<Info>
+  Even failed requests count toward your quota. Make sure to handle errors properly to avoid wasting requests.
+</Info>
+
+## Available Plans
+
+<CardGroup cols={2}>
+  <Card title="Trial Plan" icon="gift">
+    **100 requests/month**
+    
+    Perfect for testing and small projects
+    - Auto-created on signup
+    - Renews monthly
+    - Free forever
+  </Card>
+  <Card title="Enterprise Plan" icon="building">
+    **Custom limits**
+    
+    For production workloads
+    - Custom request limits
+    - Priority support
+    - Volume discounts
+    - Contact sales
+  </Card>
+</CardGroup>
+
+## Monitoring Your Quota
+
+### Dashboard
+
+Your dashboard shows real-time quota information:
+
+- **Requests Remaining** - How many requests you have left
+- **Plan Limit** - Your monthly quota
+- **Renewal Date** - When your quota will reset
+- **Usage Chart** - Daily breakdown of your requests
+
+### Checking Quota Programmatically
+
+Currently, quota information is only available through the dashboard. API endpoint for quota checking coming soon!
+
+## Quota Management
+
+### What Happens When You Run Out?
+
+When your quota reaches 0, API requests will return a `429 Too Many Requests` error:
+
+```json
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+### Options When Quota Is Exceeded
+
+<Steps>
+  <Step title="Wait for renewal">
+    Your quota automatically resets on your renewal date (shown in dashboard)
+  </Step>
+  <Step title="Upgrade your plan">
+    Contact sales for an Enterprise plan with higher limits
+  </Step>
+  <Step title="Purchase overage">
+    Coming soon - buy additional requests without upgrading
+  </Step>
+</Steps>
+
+## Future: Overage Billing
+
+We're working on overage billing that will let you:
+
+- Automatically purchase additional requests when quota is low
+- Pay per request for usage beyond your plan
+- Never get blocked by quota limits
+- Set spending caps for cost control
+
+<Note>
+  Interested in overage billing? Contact support to join the waitlist.
+</Note>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Cache results when possible">
+    Store API responses locally to avoid redundant requests for the same data.
+  </Accordion>
+  
+  <Accordion title="Implement retry logic with backoff">
+    Use exponential backoff for failed requests instead of immediately retrying.
+  </Accordion>
+  
+  <Accordion title="Monitor your usage">
+    Check your dashboard regularly to track usage patterns and avoid surprises.
+  </Accordion>
+  
+  <Accordion title="Handle quota errors gracefully">
+    Always check for 429 errors and provide appropriate user feedback.
+  </Accordion>
+</AccordionGroup>
+
+## Quota Reset Schedule
+
+Quotas reset monthly on your signup anniversary:
+
+- **Signed up on January 15** → Resets on the 15th of each month
+- **Signed up on March 31** → Resets on the last day of each month
+- Time zone: UTC
+
+<Warning>
+  Unused requests do NOT carry over to the next month. Use them or lose them!
+</Warning>
+

@@ -1,33 +1,135 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API Reference"
+description: "Complete Fetchin API documentation"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+```
+https://your-domain.com/api/v1
+```
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+Replace `your-domain.com` with your actual Fetchin deployment domain.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API requests must include your API key in the `X-API-Key` header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+<Card title="Get your API key" icon="key" href="/authentication">
+  Learn how to get and use your API key
+</Card>
+
+## Available Endpoints
+
+<CardGroup cols={2}>
+  <Card
+    title="Get Posts"
+    icon="message"
+    href="/api-reference/endpoint/get-posts"
+  >
+    Fetch posts from a LinkedIn profile
+  </Card>
+  <Card
+    title="Get Profile"
+    icon="user"
+    href="/api-reference/endpoint/get-profile"
+  >
+    Get detailed profile information
+  </Card>
+</CardGroup>
+
+## Response Format
+
+All successful responses return JSON data. Error responses include an `error` field:
+
+### Success Response
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  // ... response data
+}
 ```
+
+### Error Response
+
+```json
+{
+  "error": "Error message"
+}
+```
+
+## Common Parameters
+
+### profileUrlOrUrn
+
+LinkedIn profile identifier. Can be either:
+
+- **Profile URL**: `https://www.linkedin.com/in/username`
+- **Profile URN**: `urn:li:member:123456789`
+
+```bash
+?profileUrlOrUrn=https://www.linkedin.com/in/williamhgates
+```
+
+## Rate Limiting
+
+Fetchin implements two types of rate limiting:
+
+- **Per-second**: Maximum 10 requests per second
+- **Monthly quota**: Based on your plan (100 for Trial, custom for Enterprise)
+
+See [Rate Limits](/concepts/rate-limits) for detailed information and best practices.
+
+## Error Codes
+
+| Code | Description |
+|------|-------------|
+| 200  | Success |
+| 400  | Bad Request - Invalid parameters |
+| 401  | Unauthorized - Invalid or missing API key |
+| 429  | Too Many Requests - Quota exceeded |
+| 500  | Internal Server Error |
+
+<Card title="Error handling guide" icon="triangle-exclamation" href="/concepts/error-handling">
+  Learn how to handle errors gracefully
+</Card>
+
+## OpenAPI Specification
+
+Download the complete OpenAPI specification:
+
+```bash
+curl -O https://your-domain.com/openapi.json
+```
+
+Or view it in your browser: [openapi.json](/api-reference/openapi.json)
+
+## SDKs and Libraries
+
+<Info>
+  Official SDKs coming soon! For now, use any HTTP client library in your preferred language.
+</Info>
+
+Popular HTTP clients:
+
+- **JavaScript**: `fetch`, `axios`
+- **Python**: `requests`, `httpx`
+- **PHP**: `guzzle`, `curl`
+- **Ruby**: `httparty`, `faraday`
+- **Go**: `net/http`
+- **Java**: `HttpClient`, `OkHttp`
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Quick Start" icon="rocket" href="/quickstart">
+    Get started in 5 minutes
+  </Card>
+  <Card title="Support" icon="life-ring" href="mailto:support@fetchin.com">
+    Contact our support team
+  </Card>
+</CardGroup>
