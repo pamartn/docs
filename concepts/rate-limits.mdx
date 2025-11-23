@@ -116,7 +116,7 @@ async function fetchMultipleProfiles(profileUrls, apiKey) {
   
   for (const url of profileUrls) {
     const response = await fetch(
-      `https://your-domain.com/api/v1/profile?profileUrlOrUrn=${url}`,
+      `https://api.fetchin.io/api/v1/profile?profileUrlOrUrn=${url}`,
       { headers: { 'X-API-Key': apiKey } }
     );
     
@@ -139,7 +139,7 @@ def fetch_multiple_profiles(profile_urls, api_key):
     
     for url in profile_urls:
         response = requests.get(
-            'https://your-domain.com/api/v1/profile',
+            'https://api.fetchin.io/api/v1/profile',
             headers={'X-API-Key': api_key},
             params={'profileUrlOrUrn': url}
         )
@@ -285,7 +285,7 @@ async function getCachedProfile(profileUrl, apiKey) {
   }
   
   const response = await fetch(
-    `https://your-domain.com/api/v1/profile?profileUrlOrUrn=${profileUrl}`,
+    `https://api.fetchin.io/api/v1/profile?profileUrlOrUrn=${profileUrl}`,
     { headers: { 'X-API-Key': apiKey } }
   );
   

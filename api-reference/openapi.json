@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://your-domain.com",
+      "url": "https://api.fetchin.io",
       "description": "Production server"
     }
   ],

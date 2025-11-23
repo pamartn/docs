@@ -37,7 +37,7 @@
     "anchors": [
       {
         "name": "Dashboard",
-        "url": "https://your-domain.com/dashboard",
+        "url": "https://fetchin.io/dashboard",
         "icon": "chart-line"
       }
     ]
@@ -52,7 +52,7 @@
     "primary": {
       "type": "button",
       "label": "Get Started",
-      "href": "https://your-domain.com/dashboard"
+      "href": "https://fetchin.io/dashboard"
     }
   },
   "contextual": {

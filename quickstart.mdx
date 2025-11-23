@@ -25,13 +25,13 @@ description: "Get started with Fetchin API in under 5 minutes"
 <CodeGroup>
 
 ```bash cURL
-curl -X GET "https://your-domain.com/api/v1/posts?profileUrlOrUrn=https://www.linkedin.com/in/username&count=10" \
+curl -X GET "https://api.fetchin.io/api/v1/posts?profileUrlOrUrn=https://www.linkedin.com/in/username&count=10" \
   -H "X-API-Key: your-api-key-here"
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  'https://your-domain.com/api/v1/posts?profileUrlOrUrn=https://www.linkedin.com/in/username&count=10',
+  'https://api.fetchin.io/api/v1/posts?profileUrlOrUrn=https://www.linkedin.com/in/username&count=10',
   {
     headers: {
       'X-API-Key': 'your-api-key-here'
@@ -56,7 +56,7 @@ params = {
 }
 
 response = requests.get(
-    'https://your-domain.com/api/v1/posts',
+    'https://api.fetchin.io/api/v1/posts',
     headers=headers,
     params=params
 )
@@ -72,13 +72,13 @@ print(posts)
 <CodeGroup>
 
 ```bash cURL
-curl -X GET "https://your-domain.com/api/v1/profile?profileUrlOrUrn=https://www.linkedin.com/in/username" \
+curl -X GET "https://api.fetchin.io/api/v1/profile?profileUrlOrUrn=https://www.linkedin.com/in/username" \
   -H "X-API-Key: your-api-key-here"
 ```
 
 ```javascript JavaScript
 const response = await fetch(
-  'https://your-domain.com/api/v1/profile?profileUrlOrUrn=https://www.linkedin.com/in/username',
+  'https://api.fetchin.io/api/v1/profile?profileUrlOrUrn=https://www.linkedin.com/in/username',
   {
     headers: {
       'X-API-Key': 'your-api-key-here'
@@ -102,7 +102,7 @@ params = {
 }
 
 response = requests.get(
-    'https://your-domain.com/api/v1/profile',
+    'https://api.fetchin.io/api/v1/profile',
     headers=headers,
     params=params
 )
