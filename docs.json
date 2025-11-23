@@ -29,6 +29,7 @@
         "group": "Endpoints",
         "pages": [
           "api-reference/endpoint/get-posts",
+          "api-reference/endpoint/get-posts-updates",
           "api-reference/endpoint/get-profile"
         ]
       }
