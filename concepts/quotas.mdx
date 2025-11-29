@@ -10,11 +10,11 @@ Fetchin uses a quota system to track your API usage. Each API request consumes o
 ### Request Counting
 
 - ✅ **Successful requests** - Count toward your quota
-- ❌ **Failed requests** (4xx, 5xx errors) - Also count toward your quota
+- ✅ **Failed requests** (4xx, 5xx errors) - Do NOT count toward your quota
 - 🔄 **Quota renewal** - Happens automatically on your renewal date
 
 <Info>
-  Even failed requests count toward your quota. Make sure to handle errors properly to avoid wasting requests.
+  Only successful requests count toward your quota. Failed requests (authentication errors, validation errors, server errors, etc.) are free and do not consume credits.
 </Info>
 
 ## Available Plans
