@@ -1,6 +1,6 @@
 ---
 title: "Get Posts"
-api: "GET /api/v1/posts"
+openapi: "GET /api/v1/posts"
 description: "Fetch posts from a LinkedIn profile with engagement metrics"
 ---
 
@@ -72,6 +72,14 @@ X-API-Key: your-api-key-here
   
   <ResponseField name="videoUrl" type="string">
     URL of post video (if present)
+  </ResponseField>
+  
+  <ResponseField name="carouselPdfUrl" type="string">
+    URL of PDF document (if the post is a carousel/document post)
+  </ResponseField>
+  
+  <ResponseField name="profileUrn" type="string">
+    LinkedIn profile URN of the post author
   </ResponseField>
 </Expandable>
 </ResponseField>
@@ -149,7 +157,8 @@ print_r($posts);
 
 ## Example Response
 
-```json
+<ResponseExample>
+```json 200 Success
 [
   {
     "urn": "urn:li:activity:7123456789012345678",
@@ -159,7 +168,9 @@ print_r($posts);
     "numberOfComments": 15,
     "numberOfReposts": 8,
     "imageUrl": "https://media.licdn.com/dms/image/...",
-    "videoUrl": null
+    "videoUrl": null,
+    "carouselPdfUrl": null,
+    "profileUrn": "urn:li:fsd_profile:ACoAAABCDEF"
   },
   {
     "urn": "urn:li:activity:7123456789012345679",
@@ -169,14 +180,13 @@ print_r($posts);
     "numberOfComments": 7,
     "numberOfReposts": 3,
     "imageUrl": null,
-    "videoUrl": "https://dms.licdn.com/playlist/..."
+    "videoUrl": "https://dms.licdn.com/playlist/...",
+    "carouselPdfUrl": null,
+    "profileUrn": "urn:li:fsd_profile:ACoAAABCDEF"
   }
 ]
 ```
 
-## Error Responses
-
-<ResponseExample>
 ```json 400 Bad Request
 {
   "error": "Missing profileUrlOrUrn parameter"

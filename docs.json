@@ -2,6 +2,18 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Fetchin API",
+  "openapi": "/api-reference/openapi.json",
+  "api": {
+    "baseUrl": "https://api.fetchin.io",
+    "auth": {
+      "method": "key",
+      "name": "X-API-Key",
+      "inputPrefix": ""
+    },
+    "playground": {
+      "mode": "simple"
+    }
+  },
   "colors": {
     "primary": "#0866C2",
     "light": "#2B8DD9",

@@ -1,6 +1,6 @@
 ---
 title: "Get Profile"
-api: "GET /api/v1/profile"
+openapi: "GET /api/v1/profile"
 description: "Get detailed information about a LinkedIn profile"
 ---
 
@@ -179,7 +179,8 @@ print_r($profile);
 
 ## Example Response
 
-```json
+<ResponseExample>
+```json 200 Success
 {
   "urn": "urn:li:member:987654321",
   "firstName": "William",
@@ -213,9 +214,6 @@ print_r($profile);
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
 ```json 400 Bad Request
 {
   "error": "Missing profileUrlOrUrn parameter"

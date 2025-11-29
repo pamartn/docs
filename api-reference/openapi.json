@@ -90,6 +90,12 @@
                       },
                       "videoUrl": {
                         "type": "string"
+                      },
+                      "carouselPdfUrl": {
+                        "type": "string"
+                      },
+                      "profileUrn": {
+                        "type": "string"
                       }
                     }
                   }
@@ -112,13 +118,13 @@
     "/api/v1/posts/updates": {
       "get": {
         "summary": "Get recent posts from multiple LinkedIn profiles",
-        "description": "Fetch and aggregate recent posts from up to 10 LinkedIn profiles. Returns the last 15 posts (or specified count) from EACH profile.",
+        "description": "Fetch and aggregate recent posts from up to 60 LinkedIn profiles. Returns the last 15 posts (or specified count) from EACH profile. **Credits:** This endpoint consumes 1 credit per 1-15 profiles (rounded up). Examples: 10 profiles = 1 credit, 20 profiles = 2 credits, 45 profiles = 3 credits.",
         "parameters": [
           {
             "name": "profileUrlsOrUrns",
             "in": "query",
             "required": true,
-            "description": "Comma-separated list of LinkedIn profile URLs or URNs (maximum 10)",
+            "description": "Comma-separated list of LinkedIn profile URLs or URNs (maximum 60)",
             "schema": {
               "type": "string",
               "example": "https://www.linkedin.com/in/username1,https://www.linkedin.com/in/username2"
@@ -175,6 +181,12 @@
                             "type": "string"
                           },
                           "videoUrl": {
+                            "type": "string"
+                          },
+                          "carouselPdfUrl": {
+                            "type": "string"
+                          },
+                          "profileUrn": {
                             "type": "string"
                           }
                         }

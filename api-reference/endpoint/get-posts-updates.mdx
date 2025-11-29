@@ -1,6 +1,6 @@
 ---
 title: "Get Posts Updates"
-api: "GET /api/v1/posts/updates"
+openapi: "GET /api/v1/posts/updates"
 description: "Fetch and aggregate recent posts from multiple LinkedIn profiles"
 ---
 
@@ -18,10 +18,19 @@ Include your API key in the request header:
 X-API-Key: your-api-key-here
 ```
 
+## Credits
+
+This endpoint consumes **1 credit per 1-15 profiles** (rounded up):
+
+- 1-15 profiles = 1 credit
+- 16-30 profiles = 2 credits
+- 31-45 profiles = 3 credits
+- 46-60 profiles = 4 credits
+
 ## Parameters
 
 <ParamField query="profileUrlsOrUrns" type="string" required>
-  Comma-separated list of LinkedIn profile URLs or URNs (maximum 10 profiles).
+  Comma-separated list of LinkedIn profile URLs or URNs (maximum 60 profiles).
   
   Examples:
   - `https://www.linkedin.com/in/username1,https://www.linkedin.com/in/username2`
@@ -74,6 +83,14 @@ X-API-Key: your-api-key-here
   
   <ResponseField name="videoUrl" type="string">
     URL of post video (if present)
+  </ResponseField>
+  
+  <ResponseField name="carouselPdfUrl" type="string">
+    URL of PDF document (if the post is a carousel/document post)
+  </ResponseField>
+  
+  <ResponseField name="profileUrn" type="string">
+    LinkedIn profile URN of the post author. This field is especially useful for differentiating posts from different profiles in the aggregated response.
   </ResponseField>
 </Expandable>
 </ResponseField>
@@ -158,7 +175,8 @@ print_r($data['posts']);
 
 ## Example Response
 
-```json
+<ResponseExample>
+```json 200 Success
 {
   "posts": [
     {
@@ -169,7 +187,9 @@ print_r($data['posts']);
       "numberOfComments": 15,
       "numberOfReposts": 8,
       "imageUrl": "https://media.licdn.com/dms/image/...",
-      "videoUrl": null
+      "videoUrl": null,
+      "carouselPdfUrl": null,
+      "profileUrn": "urn:li:fsd_profile:ACoAAABCDEF"
     },
     {
       "urn": "urn:li:activity:7123456789012345679",
@@ -179,15 +199,14 @@ print_r($data['posts']);
       "numberOfComments": 7,
       "numberOfReposts": 3,
       "imageUrl": null,
-      "videoUrl": "https://dms.licdn.com/playlist/..."
+      "videoUrl": "https://dms.licdn.com/playlist/...",
+      "carouselPdfUrl": null,
+      "profileUrn": "urn:li:fsd_profile:XYZabc123"
     }
   ]
 }
 ```
 
-## Error Responses
-
-<ResponseExample>
 ```json 400 Bad Request - Missing Parameter
 {
   "error": "Missing profileUrlsOrUrns parameter"
@@ -202,7 +221,7 @@ print_r($data['posts']);
 
 ```json 400 Bad Request - Too Many Profiles
 {
-  "error": "Maximum 10 profiles allowed"
+  "error": "Maximum 60 profiles allowed"
 }
 ```
 
@@ -214,7 +233,9 @@ print_r($data['posts']);
 
 ```json 429 Too Many Requests
 {
-  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+  "error": "Insufficient quota. This request requires 3 credit(s) for 45 profile(s). Upgrade your plan or wait for renewal.",
+  "creditsNeeded": 3,
+  "profilesRequested": 45
 }
 ```
 
@@ -228,7 +249,7 @@ print_r($data['posts']);
 ## Notes
 
 <Info>
-  This endpoint counts as 1 request toward your monthly quota, regardless of the number of profiles or `count` parameter value.
+  This endpoint consumes 1 credit per 1-15 profiles (rounded up). The cost scales with the number of profiles requested.
 </Info>
 
 <Warning>
