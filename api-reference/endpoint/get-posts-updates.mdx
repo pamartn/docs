@@ -89,8 +89,30 @@ This endpoint consumes **1 credit per 1-15 profiles** (rounded up):
     URL of PDF document (if the post is a carousel/document post)
   </ResponseField>
   
-  <ResponseField name="profileUrn" type="string">
-    LinkedIn profile URN of the post author. This field is especially useful for differentiating posts from different profiles in the aggregated response.
+  <ResponseField name="profile" type="object" required>
+    Information about the post author. All fields are always present. This field is especially useful for differentiating posts from different profiles in the aggregated response.
+    
+    <Expandable title="Profile object">
+      <ResponseField name="urn" type="string" required>
+        LinkedIn profile URN of the post author
+      </ResponseField>
+      
+      <ResponseField name="name" type="string" required>
+        Full name of the post author
+      </ResponseField>
+      
+      <ResponseField name="headline" type="string" required>
+        Professional headline of the post author
+      </ResponseField>
+      
+      <ResponseField name="url" type="string" required>
+        LinkedIn profile URL of the post author
+      </ResponseField>
+      
+      <ResponseField name="imageUrl" type="string" required>
+        Profile picture URL of the post author
+      </ResponseField>
+    </Expandable>
   </ResponseField>
 </Expandable>
 </ResponseField>
@@ -189,7 +211,13 @@ print_r($data['posts']);
       "imageUrl": "https://media.licdn.com/dms/image/...",
       "videoUrl": null,
       "carouselPdfUrl": null,
-      "profileUrn": "urn:li:fsd_profile:ACoAAABCDEF"
+      "profile": {
+        "urn": "urn:li:fsd_profile:ACoAAABCDEF",
+        "name": "William Gates",
+        "headline": "Co-chair, Bill & Melinda Gates Foundation",
+        "url": "https://www.linkedin.com/in/williamhgates",
+        "imageUrl": "https://media.licdn.com/dms/image/..."
+      }
     },
     {
       "urn": "urn:li:activity:7123456789012345679",
@@ -201,7 +229,13 @@ print_r($data['posts']);
       "imageUrl": null,
       "videoUrl": "https://dms.licdn.com/playlist/...",
       "carouselPdfUrl": null,
-      "profileUrn": "urn:li:fsd_profile:XYZabc123"
+      "profile": {
+        "urn": "urn:li:fsd_profile:XYZabc123",
+        "name": "Jeff Weiner",
+        "headline": "Executive Chairman at LinkedIn",
+        "url": "https://www.linkedin.com/in/jeffweiner08",
+        "imageUrl": "https://media.licdn.com/dms/image/..."
+      }
     }
   ]
 }

@@ -94,8 +94,31 @@
                       "carouselPdfUrl": {
                         "type": "string"
                       },
-                      "profileUrn": {
-                        "type": "string"
+                      "profile": {
+                        "type": "object",
+                        "required": ["urn", "name", "headline", "url", "imageUrl"],
+                        "properties": {
+                          "urn": {
+                            "type": "string",
+                            "example": "urn:li:fsd_profile:ACoAAABCDEF"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "John Doe"
+                          },
+                          "headline": {
+                            "type": "string",
+                            "example": "Software Engineer at Tech Company"
+                          },
+                          "url": {
+                            "type": "string",
+                            "example": "https://www.linkedin.com/in/johndoe"
+                          },
+                          "imageUrl": {
+                            "type": "string",
+                            "example": "https://media.licdn.com/dms/image/..."
+                          }
+                        }
                       }
                     }
                   }
@@ -186,8 +209,31 @@
                           "carouselPdfUrl": {
                             "type": "string"
                           },
-                          "profileUrn": {
-                            "type": "string"
+                          "profile": {
+                            "type": "object",
+                            "required": ["urn", "name", "headline", "url", "imageUrl"],
+                            "properties": {
+                              "urn": {
+                                "type": "string",
+                                "example": "urn:li:fsd_profile:ACoAAABCDEF"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "John Doe"
+                              },
+                              "headline": {
+                                "type": "string",
+                                "example": "Software Engineer at Tech Company"
+                              },
+                              "url": {
+                                "type": "string",
+                                "example": "https://www.linkedin.com/in/johndoe"
+                              },
+                              "imageUrl": {
+                                "type": "string",
+                                "example": "https://media.licdn.com/dms/image/..."
+                              }
+                            }
                           }
                         }
                       }

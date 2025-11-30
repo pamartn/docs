@@ -78,8 +78,30 @@ X-API-Key: your-api-key-here
     URL of PDF document (if the post is a carousel/document post)
   </ResponseField>
   
-  <ResponseField name="profileUrn" type="string">
-    LinkedIn profile URN of the post author
+  <ResponseField name="profile" type="object" required>
+    Information about the post author. All fields are always present.
+    
+    <Expandable title="Profile object">
+      <ResponseField name="urn" type="string" required>
+        LinkedIn profile URN of the post author
+      </ResponseField>
+      
+      <ResponseField name="name" type="string" required>
+        Full name of the post author
+      </ResponseField>
+      
+      <ResponseField name="headline" type="string" required>
+        Professional headline of the post author
+      </ResponseField>
+      
+      <ResponseField name="url" type="string" required>
+        LinkedIn profile URL of the post author
+      </ResponseField>
+      
+      <ResponseField name="imageUrl" type="string" required>
+        Profile picture URL of the post author
+      </ResponseField>
+    </Expandable>
   </ResponseField>
 </Expandable>
 </ResponseField>
@@ -170,7 +192,13 @@ print_r($posts);
     "imageUrl": "https://media.licdn.com/dms/image/...",
     "videoUrl": null,
     "carouselPdfUrl": null,
-    "profileUrn": "urn:li:fsd_profile:ACoAAABCDEF"
+    "profile": {
+      "urn": "urn:li:fsd_profile:ACoAAABCDEF",
+      "name": "William Gates",
+      "headline": "Co-chair, Bill & Melinda Gates Foundation",
+      "url": "https://www.linkedin.com/in/williamhgates",
+      "imageUrl": "https://media.licdn.com/dms/image/..."
+    }
   },
   {
     "urn": "urn:li:activity:7123456789012345679",
@@ -182,7 +210,13 @@ print_r($posts);
     "imageUrl": null,
     "videoUrl": "https://dms.licdn.com/playlist/...",
     "carouselPdfUrl": null,
-    "profileUrn": "urn:li:fsd_profile:ACoAAABCDEF"
+    "profile": {
+      "urn": "urn:li:fsd_profile:ACoAAABCDEF",
+      "name": "William Gates",
+      "headline": "Co-chair, Bill & Melinda Gates Foundation",
+      "url": "https://www.linkedin.com/in/williamhgates",
+      "imageUrl": "https://media.licdn.com/dms/image/..."
+    }
   }
 ]
 ```
