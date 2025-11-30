@@ -1,0 +1,303 @@
+---
+title: "Get Post Comments"
+openapi: "GET /api/v1/post/comments"
+description: "Fetch comments from a LinkedIn post with author information and replies"
+---
+
+## Endpoint
+
+```
+GET /api/v1/post/comments
+```
+
+## Authentication
+
+Include your API key in the request header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+## Parameters
+
+<ParamField query="postUrn" type="string" required>
+  LinkedIn post URN.
+  
+  Examples:
+  - `urn:li:ugcPost:7287782484287606784`
+  - `urn:li:activity:7287782484287606784`
+</ParamField>
+
+<ParamField query="count" type="integer" default="100">
+  Number of comments to fetch per page.
+  
+  - Minimum: 1
+  - Maximum: 100
+  - Default: 100
+</ParamField>
+
+<ParamField query="start" type="integer" default="0">
+  Offset for pagination.
+  
+  - Default: 0
+</ParamField>
+
+<ParamField query="paginationToken" type="string">
+  Token for fetching the next page of comments. Returned from previous request when more comments are available.
+</ParamField>
+
+## Response
+
+<ResponseField name="comments" type="array">
+  Array of LinkedIn comments
+
+<Expandable title="Comment object">
+  <ResponseField name="urn" type="string">
+    Unique comment identifier
+  </ResponseField>
+  
+  <ResponseField name="text" type="string">
+    Comment text content
+  </ResponseField>
+  
+  <ResponseField name="createdAt" type="string">
+    ISO 8601 timestamp of when the comment was posted
+  </ResponseField>
+  
+  <ResponseField name="reactionCount" type="integer">
+    Number of reactions on the comment
+  </ResponseField>
+  
+  <ResponseField name="author" type="object" required>
+    Information about the comment author
+    
+    <Expandable title="Author object">
+      <ResponseField name="name" type="string" required>
+        Full name of the comment author
+      </ResponseField>
+      
+      <ResponseField name="headline" type="string" required>
+        Professional headline of the comment author
+      </ResponseField>
+      
+      <ResponseField name="profilePictureUrl" type="string" required>
+        Profile picture URL of the comment author
+      </ResponseField>
+      
+      <ResponseField name="profileUrl" type="string" required>
+        LinkedIn profile URL of the comment author
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+  
+  <ResponseField name="replies" type="array">
+    Array of reply comments (subcomments). Each reply has the same structure as a comment, but with an empty replies array.
+  </ResponseField>
+</Expandable>
+</ResponseField>
+
+<ResponseField name="paginationToken" type="string">
+  Token for fetching the next page of comments. Only present when more comments are available.
+</ResponseField>
+
+<ResponseField name="hasMore" type="boolean">
+  Indicates whether there are more comments to fetch.
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.fetchin.io/api/v1/post/comments?postUrn=urn:li:ugcPost:7287782484287606784&count=10" \
+  -H "X-API-Key: your-api-key-here"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://api.fetchin.io/api/v1/post/comments?postUrn=urn:li:ugcPost:7287782484287606784&count=10',
+  {
+    headers: {
+      'X-API-Key': 'your-api-key-here'
+    }
+  }
+);
+
+const data = await response.json();
+console.log(data);
+```
+
+```python Python
+import requests
+
+headers = {
+    'X-API-Key': 'your-api-key-here'
+}
+
+params = {
+    'postUrn': 'urn:li:ugcPost:7287782484287606784',
+    'count': 10
+}
+
+response = requests.get(
+    'https://api.fetchin.io/api/v1/post/comments',
+    headers=headers,
+    params=params
+)
+
+data = response.json()
+print(data)
+```
+
+```php PHP
+<?php
+
+$apiKey = 'your-api-key-here';
+$postUrn = 'urn:li:ugcPost:7287782484287606784';
+$count = 10;
+
+$url = "https://api.fetchin.io/api/v1/post/comments?postUrn=" . urlencode($postUrn) . "&count=" . $count;
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-API-Key: ' . $apiKey
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+
+curl_close($ch);
+print_r($data);
+?>
+```
+
+</CodeGroup>
+
+## Example Response
+
+<ResponseExample>
+```json 200 Success
+{
+  "comments": [
+    {
+      "urn": "urn:li:comment:(ugcPost:7287782484287606784,7287957733851484162)",
+      "text": "Great post! Thanks for sharing.",
+      "createdAt": "2024-01-22T14:22:07.458Z",
+      "reactionCount": 5,
+      "author": {
+        "name": "Jane Doe",
+        "headline": "Software Engineer at Tech Company",
+        "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+        "profileUrl": "https://www.linkedin.com/in/janedoe"
+      },
+      "replies": [
+        {
+          "urn": "urn:li:comment:(ugcPost:7287782484287606784,7287960123456789012)",
+          "text": "Totally agree with you!",
+          "createdAt": "2024-01-22T14:35:00.000Z",
+          "reactionCount": 2,
+          "author": {
+            "name": "John Smith",
+            "headline": "Product Manager",
+            "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+            "profileUrl": "https://www.linkedin.com/in/johnsmith"
+          },
+          "replies": []
+        }
+      ]
+    },
+    {
+      "urn": "urn:li:comment:(ugcPost:7287782484287606784,7287958844962595073)",
+      "text": "Very insightful perspective!",
+      "createdAt": "2024-01-22T14:25:30.000Z",
+      "reactionCount": 3,
+      "author": {
+        "name": "Alice Johnson",
+        "headline": "Marketing Director",
+        "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+        "profileUrl": "https://www.linkedin.com/in/alicejohnson"
+      },
+      "replies": []
+    }
+  ],
+  "paginationToken": "MTAtMTcwNjAwMDAwMDAwMA==",
+  "hasMore": true
+}
+```
+
+```json 400 Bad Request
+{
+  "error": "Missing postUrn parameter"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Failed to fetch LinkedIn data"
+}
+```
+</ResponseExample>
+
+## Pagination
+
+To fetch all comments from a post with many comments, use pagination:
+
+1. Make an initial request without `paginationToken`
+2. If `hasMore` is `true`, use the returned `paginationToken` in your next request
+3. Continue until `hasMore` is `false`
+
+```javascript
+async function fetchAllComments(postUrn) {
+  const allComments = [];
+  let paginationToken = null;
+  let hasMore = true;
+
+  while (hasMore) {
+    const params = new URLSearchParams({ postUrn, count: '100' });
+    if (paginationToken) {
+      params.set('paginationToken', paginationToken);
+    }
+
+    const response = await fetch(
+      `https://api.fetchin.io/api/v1/post/comments?${params}`,
+      { headers: { 'X-API-Key': 'your-api-key-here' } }
+    );
+
+    const data = await response.json();
+    allComments.push(...data.comments);
+    paginationToken = data.paginationToken;
+    hasMore = data.hasMore;
+  }
+
+  return allComments;
+}
+```
+
+## Notes
+
+<Info>
+  This endpoint counts as 1 request toward your monthly quota per API call, regardless of the `count` parameter value.
+</Info>
+
+<Warning>
+  Comments are returned in relevance order by default. Each comment includes its replies (subcomments) nested within.
+</Warning>
+
+<Tip>
+  Use the `paginationToken` to efficiently paginate through large comment sections without re-fetching already retrieved comments.
+</Tip>
+

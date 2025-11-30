@@ -255,6 +255,175 @@
         }
       }
     },
+    "/api/v1/post/comments": {
+      "get": {
+        "summary": "Get comments from a LinkedIn post",
+        "description": "Fetch comments from a LinkedIn post including author information and replies (subcomments)",
+        "parameters": [
+          {
+            "name": "postUrn",
+            "in": "query",
+            "required": true,
+            "description": "LinkedIn post URN",
+            "schema": {
+              "type": "string",
+              "example": "urn:li:ugcPost:7287782484287606784"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "Number of comments to fetch (default: 100)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination (default: 0)",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "paginationToken",
+            "in": "query",
+            "required": false,
+            "description": "Token for fetching the next page of comments",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched comments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "urn": {
+                            "type": "string",
+                            "example": "urn:li:comment:(ugcPost:7287782484287606784,7287957733851484162)"
+                          },
+                          "text": {
+                            "type": "string",
+                            "example": "Great post! Thanks for sharing."
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "reactionCount": {
+                            "type": "integer"
+                          },
+                          "author": {
+                            "type": "object",
+                            "required": ["name", "headline", "profilePictureUrl", "profileUrl"],
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "example": "Jane Doe"
+                              },
+                              "headline": {
+                                "type": "string",
+                                "example": "Software Engineer at Tech Company"
+                              },
+                              "profilePictureUrl": {
+                                "type": "string",
+                                "example": "https://media.licdn.com/dms/image/..."
+                              },
+                              "profileUrl": {
+                                "type": "string",
+                                "example": "https://www.linkedin.com/in/janedoe"
+                              }
+                            }
+                          },
+                          "replies": {
+                            "type": "array",
+                            "description": "Array of reply comments (subcomments)",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "urn": {
+                                  "type": "string"
+                                },
+                                "text": {
+                                  "type": "string"
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "reactionCount": {
+                                  "type": "integer"
+                                },
+                                "author": {
+                                  "type": "object",
+                                  "properties": {
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "headline": {
+                                      "type": "string"
+                                    },
+                                    "profilePictureUrl": {
+                                      "type": "string"
+                                    },
+                                    "profileUrl": {
+                                      "type": "string"
+                                    }
+                                  }
+                                },
+                                "replies": {
+                                  "type": "array",
+                                  "items": {}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "paginationToken": {
+                      "type": "string",
+                      "description": "Token for fetching the next page"
+                    },
+                    "hasMore": {
+                      "type": "boolean",
+                      "description": "Whether more comments are available"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "429": {
+            "description": "Too many requests - Quota exceeded"
+          }
+        }
+      }
+    },
     "/api/v1/profile": {
       "get": {
         "summary": "Get LinkedIn profile information",
