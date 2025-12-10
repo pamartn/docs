@@ -34,10 +34,6 @@ X-API-Key: your-api-key-here
   LinkedIn profile information
 
 <Expandable title="Profile object">
-  <ResponseField name="urn" type="string">
-    Unique profile identifier
-  </ResponseField>
-  
   <ResponseField name="firstName" type="string">
     Profile first name
   </ResponseField>
@@ -46,8 +42,12 @@ X-API-Key: your-api-key-here
     Profile last name
   </ResponseField>
   
-  <ResponseField name="headline" type="string">
+  <ResponseField name="title" type="string">
     Professional headline
+  </ResponseField>
+  
+  <ResponseField name="description" type="string">
+    About/summary section
   </ResponseField>
   
   <ResponseField name="location" type="string">
@@ -58,50 +58,42 @@ X-API-Key: your-api-key-here
     Profile picture URL
   </ResponseField>
   
-  <ResponseField name="about" type="string">
-    About/summary section
-  </ResponseField>
-  
   <ResponseField name="experiences" type="array">
     Work experience history
     
 <Expandable title="Experience object">
-      <ResponseField name="title" type="string">
-        Job title
-      </ResponseField>
-      
-      <ResponseField name="company" type="string">
+      <ResponseField name="name" type="string">
         Company name
       </ResponseField>
       
-      <ResponseField name="startDate" type="string">
-        Start date (YYYY-MM format)
+      <ResponseField name="jobTitle" type="string">
+        Job title/role
       </ResponseField>
       
-      <ResponseField name="endDate" type="string">
-        End date (YYYY-MM format, null if current)
+      <ResponseField name="description" type="string">
+        Role description
+      </ResponseField>
+      
+      <ResponseField name="dateRange" type="string">
+        Date range (e.g., "Jan 2020 - Present")
       </ResponseField>
     </Expandable>
   </ResponseField>
   
-  <ResponseField name="education" type="array">
+  <ResponseField name="educations" type="array">
     Education history
     
     <Expandable title="Education object">
-      <ResponseField name="school" type="string">
+      <ResponseField name="name" type="string">
         School/University name
       </ResponseField>
       
-      <ResponseField name="degree" type="string">
+      <ResponseField name="description" type="string">
         Degree type and field
       </ResponseField>
       
-      <ResponseField name="startDate" type="string">
-        Start year
-      </ResponseField>
-      
-      <ResponseField name="endDate" type="string">
-        End year
+      <ResponseField name="dateRange" type="string">
+        Date range (e.g., "2016 - 2020")
       </ResponseField>
     </Expandable>
   </ResponseField>
@@ -182,33 +174,31 @@ print_r($profile);
 <ResponseExample>
 ```json 200 Success
 {
-  "urn": "urn:li:member:987654321",
   "firstName": "William",
   "lastName": "Gates",
-  "headline": "Co-chair, Bill & Melinda Gates Foundation",
+  "title": "Co-chair, Bill & Melinda Gates Foundation",
+  "description": "Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.",
   "location": "Seattle, Washington, United States",
   "profilePictureUrl": "https://media.licdn.com/dms/image/...",
-  "about": "Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.",
   "experiences": [
     {
-      "title": "Co-chair",
-      "company": "Bill & Melinda Gates Foundation",
-      "startDate": "2000-01",
-      "endDate": null
+      "name": "Bill & Melinda Gates Foundation",
+      "jobTitle": "Co-chair",
+      "description": "",
+      "dateRange": "Jan 2000 - Present"
     },
     {
-      "title": "Co-founder",
-      "company": "Microsoft",
-      "startDate": "1975-04",
-      "endDate": "2020-03"
+      "name": "Microsoft",
+      "jobTitle": "Co-founder",
+      "description": "",
+      "dateRange": "Apr 1975 - Mar 2020"
     }
   ],
-  "education": [
+  "educations": [
     {
-      "school": "Harvard University",
-      "degree": "Bachelor's degree, Computer Science",
-      "startDate": "1973",
-      "endDate": "1975"
+      "name": "Harvard University",
+      "description": "Bachelor's degree, Computer Science",
+      "dateRange": "1973 - 1975"
     }
   ]
 }
@@ -269,4 +259,3 @@ print_r($profile);
     Verify professional credentials and work history
   </Card>
 </CardGroup>
-

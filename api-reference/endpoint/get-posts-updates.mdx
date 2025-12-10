@@ -53,28 +53,24 @@ This endpoint consumes **1 credit per 1-15 profiles** (rounded up):
   Array of recent LinkedIn posts aggregated from all specified profiles
 
 <Expandable title="Post object">
-  <ResponseField name="urn" type="string">
-    Unique post identifier
+  <ResponseField name="id" type="string">
+    Unique post identifier (URN format)
   </ResponseField>
   
-  <ResponseField name="text" type="string">
+  <ResponseField name="content" type="string">
     Post content/text
   </ResponseField>
   
-  <ResponseField name="publishedAt" type="string">
+  <ResponseField name="date" type="string">
     ISO 8601 timestamp of when the post was published
   </ResponseField>
   
-  <ResponseField name="numberOfLikes" type="integer">
-    Total likes count
+  <ResponseField name="reactionCount" type="integer">
+    Total reactions count (likes, etc.)
   </ResponseField>
   
-  <ResponseField name="numberOfComments" type="integer">
+  <ResponseField name="commentCount" type="integer">
     Total comments count
-  </ResponseField>
-  
-  <ResponseField name="numberOfReposts" type="integer">
-    Total reposts/shares count
   </ResponseField>
   
   <ResponseField name="imageUrl" type="string">
@@ -202,12 +198,11 @@ print_r($data['posts']);
 {
   "posts": [
     {
-      "urn": "urn:li:activity:7123456789012345678",
-      "text": "Excited to announce our new initiative...",
-      "publishedAt": "2024-01-15T10:30:00Z",
-      "numberOfLikes": 127,
-      "numberOfComments": 15,
-      "numberOfReposts": 8,
+      "id": "urn:li:activity:7123456789012345678",
+      "content": "Excited to announce our new initiative...",
+      "date": "2024-01-15T10:30:00Z",
+      "reactionCount": 127,
+      "commentCount": 15,
       "imageUrl": "https://media.licdn.com/dms/image/...",
       "videoUrl": null,
       "carouselPdfUrl": null,
@@ -220,12 +215,11 @@ print_r($data['posts']);
       }
     },
     {
-      "urn": "urn:li:activity:7123456789012345679",
-      "text": "Reflecting on the past year and looking forward...",
-      "publishedAt": "2024-01-10T14:20:00Z",
-      "numberOfLikes": 89,
-      "numberOfComments": 7,
-      "numberOfReposts": 3,
+      "id": "urn:li:activity:7123456789012345679",
+      "content": "Reflecting on the past year and looking forward...",
+      "date": "2024-01-10T14:20:00Z",
+      "reactionCount": 89,
+      "commentCount": 7,
       "imageUrl": null,
       "videoUrl": "https://dms.licdn.com/playlist/...",
       "carouselPdfUrl": null,
@@ -297,4 +291,3 @@ print_r($data['posts']);
 <Tip>
   You can mix profile URLs and URNs in the same request. Both formats are supported.
 </Tip>
-

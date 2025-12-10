@@ -64,25 +64,22 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "urn": {
+                      "id": {
                         "type": "string",
                         "example": "urn:li:activity:1234567890"
                       },
-                      "text": {
+                      "content": {
                         "type": "string",
                         "example": "This is a LinkedIn post content..."
                       },
-                      "publishedAt": {
+                      "date": {
                         "type": "string",
                         "format": "date-time"
                       },
-                      "numberOfLikes": {
+                      "reactionCount": {
                         "type": "integer"
                       },
-                      "numberOfComments": {
-                        "type": "integer"
-                      },
-                      "numberOfReposts": {
+                      "commentCount": {
                         "type": "integer"
                       },
                       "imageUrl": {
@@ -179,25 +176,22 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "urn": {
+                          "id": {
                             "type": "string",
                             "example": "urn:li:activity:1234567890"
                           },
-                          "text": {
+                          "content": {
                             "type": "string",
                             "example": "This is a LinkedIn post content..."
                           },
-                          "publishedAt": {
+                          "date": {
                             "type": "string",
                             "format": "date-time"
                           },
-                          "numberOfLikes": {
+                          "reactionCount": {
                             "type": "integer"
                           },
-                          "numberOfComments": {
-                            "type": "integer"
-                          },
-                          "numberOfReposts": {
+                          "commentCount": {
                             "type": "integer"
                           },
                           "imageUrl": {
@@ -448,17 +442,19 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "urn": {
-                      "type": "string"
-                    },
                     "firstName": {
                       "type": "string"
                     },
                     "lastName": {
                       "type": "string"
                     },
-                    "headline": {
-                      "type": "string"
+                    "title": {
+                      "type": "string",
+                      "description": "Professional headline"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "About/summary section"
                     },
                     "location": {
                       "type": "string"
@@ -466,45 +462,46 @@
                     "profilePictureUrl": {
                       "type": "string"
                     },
-                    "about": {
-                      "type": "string"
-                    },
                     "experiences": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "title": {
-                            "type": "string"
+                          "name": {
+                            "type": "string",
+                            "description": "Company name"
                           },
-                          "company": {
-                            "type": "string"
+                          "jobTitle": {
+                            "type": "string",
+                            "description": "Job title/role"
                           },
-                          "startDate": {
-                            "type": "string"
+                          "description": {
+                            "type": "string",
+                            "description": "Role description"
                           },
-                          "endDate": {
-                            "type": "string"
+                          "dateRange": {
+                            "type": "string",
+                            "description": "Date range (e.g., 'Jan 2020 - Present')"
                           }
                         }
                       }
                     },
-                    "education": {
+                    "educations": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
-                          "school": {
-                            "type": "string"
+                          "name": {
+                            "type": "string",
+                            "description": "School/University name"
                           },
-                          "degree": {
-                            "type": "string"
+                          "description": {
+                            "type": "string",
+                            "description": "Degree type and field"
                           },
-                          "startDate": {
-                            "type": "string"
-                          },
-                          "endDate": {
-                            "type": "string"
+                          "dateRange": {
+                            "type": "string",
+                            "description": "Date range (e.g., '2016 - 2020')"
                           }
                         }
                       }
@@ -528,4 +525,3 @@
     }
   }
 }
-
