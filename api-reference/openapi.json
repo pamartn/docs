@@ -52,6 +52,26 @@
               "maximum": 50,
               "default": 10
             }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination (default: 0)",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "paginationToken",
+            "in": "query",
+            "required": false,
+            "description": "Token for fetching the next page of posts. Use the paginationToken from the previous response.",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
