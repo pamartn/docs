@@ -34,6 +34,10 @@ X-API-Key: your-api-key-here
   LinkedIn profile information
 
 <Expandable title="Profile object">
+  <ResponseField name="urn" type="string">
+    LinkedIn profile URN (unique identifier)
+  </ResponseField>
+  
   <ResponseField name="firstName" type="string">
     Profile first name
   </ResponseField>
@@ -174,6 +178,7 @@ print_r($profile);
 <ResponseExample>
 ```json 200 Success
 {
+  "urn": "urn:li:fsd_profile:ACoAAABCDEF",
   "firstName": "William",
   "lastName": "Gates",
   "title": "Co-chair, Bill & Melinda Gates Foundation",

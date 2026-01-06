@@ -347,8 +347,12 @@
                           },
                           "author": {
                             "type": "object",
-                            "required": ["name", "headline", "profilePictureUrl", "profileUrl"],
+                            "required": ["urn", "name", "headline", "profilePictureUrl", "profileUrl"],
                             "properties": {
+                              "urn": {
+                                "type": "string",
+                                "example": "urn:li:fsd_profile:ACoAABCDEFG"
+                              },
                               "name": {
                                 "type": "string",
                                 "example": "Jane Doe"
@@ -389,6 +393,9 @@
                                 "author": {
                                   "type": "object",
                                   "properties": {
+                                    "urn": {
+                                      "type": "string"
+                                    },
                                     "name": {
                                       "type": "string"
                                     },
@@ -462,6 +469,11 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "urn": {
+                      "type": "string",
+                      "description": "LinkedIn profile URN (unique identifier)",
+                      "example": "urn:li:fsd_profile:ACoAAABCDEF"
+                    },
                     "firstName": {
                       "type": "string"
                     },
