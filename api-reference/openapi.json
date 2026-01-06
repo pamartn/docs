@@ -347,9 +347,9 @@
                           },
                           "author": {
                             "type": "object",
-                            "required": ["urn", "name", "headline", "profilePictureUrl", "profileUrl"],
+                            "required": ["id", "name", "headline", "profilePictureUrl", "profileUrl"],
                             "properties": {
-                              "urn": {
+                              "id": {
                                 "type": "string",
                                 "example": "urn:li:fsd_profile:ACoAABCDEFG"
                               },
@@ -393,7 +393,7 @@
                                 "author": {
                                   "type": "object",
                                   "properties": {
-                                    "urn": {
+                                    "id": {
                                       "type": "string"
                                     },
                                     "name": {
@@ -469,7 +469,7 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "urn": {
+                    "id": {
                       "type": "string",
                       "description": "LinkedIn profile URN (unique identifier)",
                       "example": "urn:li:fsd_profile:ACoAAABCDEF"
