@@ -1,0 +1,213 @@
+---
+title: "Search Profiles"
+openapi: "GET /api/v1/search"
+description: "Search for LinkedIn profiles by keyword"
+---
+
+## Endpoint
+
+```
+GET /api/v1/search
+```
+
+## Authentication
+
+Include your API key in the request header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+## Parameters
+
+<ParamField query="keyword" type="string" required>
+  Search keyword to find LinkedIn profiles.
+  
+  Examples:
+  - `software engineer`
+  - `marketing manager`
+  - `John Doe`
+  - `Google`
+</ParamField>
+
+## Response
+
+<ResponseField name="results" type="array">
+  Array of matching LinkedIn profiles
+
+<Expandable title="Search result object">
+  <ResponseField name="name" type="string" required>
+    Full name of the LinkedIn member
+  </ResponseField>
+  
+  <ResponseField name="profileUrl" type="string" required>
+    LinkedIn profile URL
+  </ResponseField>
+  
+  <ResponseField name="profilePictureUrl" type="string">
+    Profile picture URL
+  </ResponseField>
+  
+  <ResponseField name="headline" type="string">
+    Professional headline
+  </ResponseField>
+  
+  <ResponseField name="location" type="string">
+    Geographic location
+  </ResponseField>
+</Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.fetchin.io/api/v1/search?keyword=software%20engineer" \
+  -H "X-API-Key: your-api-key-here"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://api.fetchin.io/api/v1/search?keyword=software%20engineer',
+  {
+    headers: {
+      'X-API-Key': 'your-api-key-here'
+    }
+  }
+);
+
+const results = await response.json();
+console.log(results);
+```
+
+```python Python
+import requests
+
+headers = {
+    'X-API-Key': 'your-api-key-here'
+}
+
+params = {
+    'keyword': 'software engineer'
+}
+
+response = requests.get(
+    'https://api.fetchin.io/api/v1/search',
+    headers=headers,
+    params=params
+)
+
+results = response.json()
+print(results)
+```
+
+```php PHP
+<?php
+
+$apiKey = 'your-api-key-here';
+$keyword = 'software engineer';
+
+$url = "https://api.fetchin.io/api/v1/search?keyword=" . urlencode($keyword);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-API-Key: ' . $apiKey
+]);
+
+$response = curl_exec($ch);
+$results = json_decode($response, true);
+
+curl_close($ch);
+print_r($results);
+?>
+```
+
+</CodeGroup>
+
+## Example Response
+
+<ResponseExample>
+```json 200 Success
+[
+  {
+    "name": "John Doe",
+    "profileUrl": "https://www.linkedin.com/in/johndoe",
+    "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+    "headline": "Senior Software Engineer at Google",
+    "location": "San Francisco, CA"
+  },
+  {
+    "name": "Jane Smith",
+    "profileUrl": "https://www.linkedin.com/in/janesmith",
+    "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+    "headline": "Software Engineer at Microsoft",
+    "location": "Seattle, WA"
+  },
+  {
+    "name": "Alex Johnson",
+    "profileUrl": "https://www.linkedin.com/in/alexjohnson",
+    "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+    "headline": "Lead Software Engineer at Amazon",
+    "location": "New York, NY"
+  }
+]
+```
+
+```json 400 Bad Request
+{
+  "error": "Missing keyword parameter"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Failed to fetch LinkedIn data"
+}
+```
+</ResponseExample>
+
+## Notes
+
+<Info>
+  This endpoint counts as 1 request toward your monthly quota. Failed requests (errors) do not count against your quota.
+</Info>
+
+<Warning>
+  Search results are fetched in real-time from LinkedIn. Response times may vary based on the complexity of the search.
+</Warning>
+
+<Tip>
+  Use specific keywords for better results. Combine name, title, or company for more targeted searches.
+</Tip>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Lead generation" icon="users">
+    Find potential leads matching specific job titles or industries
+  </Card>
+  <Card title="Recruitment" icon="briefcase">
+    Search for candidates with specific skills or experience
+  </Card>
+  <Card title="Networking" icon="handshake">
+    Discover professionals in your industry or area
+  </Card>
+  <Card title="Research" icon="magnifying-glass">
+    Find experts or thought leaders in specific domains
+  </Card>
+</CardGroup>

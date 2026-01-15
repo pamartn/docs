@@ -554,6 +554,76 @@
           }
         }
       }
+    },
+    "/api/v1/search": {
+      "get": {
+        "summary": "Search LinkedIn profiles",
+        "description": "Search for LinkedIn profiles by keyword. Returns matching profiles with basic information.",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "description": "Search keyword (name, title, company, etc.)",
+            "schema": {
+              "type": "string",
+              "example": "software engineer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "profileUrl"],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Full name of the LinkedIn member",
+                        "example": "John Doe"
+                      },
+                      "profileUrl": {
+                        "type": "string",
+                        "description": "LinkedIn profile URL",
+                        "example": "https://www.linkedin.com/in/johndoe"
+                      },
+                      "profilePictureUrl": {
+                        "type": "string",
+                        "description": "Profile picture URL",
+                        "example": "https://media.licdn.com/dms/image/..."
+                      },
+                      "headline": {
+                        "type": "string",
+                        "description": "Professional headline",
+                        "example": "Software Engineer at Tech Company"
+                      },
+                      "location": {
+                        "type": "string",
+                        "description": "Geographic location",
+                        "example": "San Francisco, CA"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Missing keyword parameter"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "429": {
+            "description": "Too many requests - Quota exceeded"
+          }
+        }
+      }
     }
   }
 }
