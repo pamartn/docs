@@ -7,53 +7,54 @@ description: "Understanding API rate limits and throttling"
 
 Fetchin implements two types of rate limiting to ensure fair usage and system stability:
 
-1. **Per-second rate limit**: 10 requests per second
+1. **Per-second rate limit**: Configurable per plan (default: 20 requests per second)
 2. **Monthly quota**: Based on your plan (100 for Trial, custom for Enterprise)
 
 ### Rate Limit Structure
 
 <CardGroup cols={2}>
   <Card title="Per-Second Limit" icon="clock">
-    **10 requests/second**
+    **Plan-based**
     
-    Prevents burst traffic and ensures system stability
+    Trial: 20 requests/second
+    Enterprise: Custom RPS
   </Card>
   <Card title="Monthly Quota" icon="calendar">
     **Plan-based**
     
-    Trial: 100 requests/month
+    Trial: 1,000 requests/month
     Enterprise: Custom
   </Card>
 </CardGroup>
 
 ## Per-Second Rate Limit
 
-Maximum of **10 requests per second** across all endpoints.
+Your per-second rate limit depends on your plan. Trial plans have a default of **20 requests per second**, while Enterprise plans can have custom limits.
 
 ### How It Works
 
-- Requests are counted per second
-- After 10 requests in one second, subsequent requests return `429`
-- Counter resets every second
-- Applies to all API endpoints combined
+- Requests are counted using a sliding window algorithm
+- After exceeding your RPS limit, subsequent requests return `429`
+- The limit is per API key and applies across all endpoints
+- Your specific RPS limit is visible in your dashboard
 
-### Example
+### Example (with 20 RPS limit)
 
 ```
-Second 1: 10 requests ✅ (all succeed)
-Second 1: 11th request ❌ (429 error)
-Second 2: 10 requests ✅ (counter reset, all succeed)
+Second 1: 20 requests ✅ (all succeed)
+Second 1: 21st request ❌ (429 error)
+Second 2: 20 requests ✅ (window slides, all succeed)
 ```
 
 <Warning>
-  The 10 req/s limit applies across ALL your requests. If you make 10 profile requests in one second, you cannot make any posts requests until the next second.
+  Your RPS limit applies across ALL your requests. If you make 20 profile requests in one second (with a 20 RPS limit), you cannot make any posts requests until the window slides.
 </Warning>
 
 ## Monthly Quota Limiting
 
 Total requests allowed per month based on your plan:
 
-- **Trial Plan**: 100 requests/month
+- **Trial Plan**: 1,000 requests/month
 - **Enterprise Plan**: Custom limits
 
 ### How It Works
@@ -72,7 +73,7 @@ You'll receive this error in two scenarios:
 **Per-second limit exceeded:**
 ```json
 {
-  "error": "Rate limit exceeded. Maximum 10 requests per second."
+  "error": "Rate limit exceeded. Try again later."
 }
 ```
 
@@ -88,30 +89,34 @@ You'll receive this error in two scenarios:
 Each API response includes rate limit headers:
 
 ```
-X-RateLimit-Limit: 10
+X-RateLimit-Limit: 20
 X-RateLimit-Remaining: 7
 X-RateLimit-Reset: 1704067201
 ```
 
-- `X-RateLimit-Limit`: Requests allowed per second (10)
+- `X-RateLimit-Limit`: Requests allowed per second (20)
 - `X-RateLimit-Remaining`: Requests remaining this second
 - `X-RateLimit-Reset`: Unix timestamp when limit resets
 
 <Note>
-  Rate limit headers show per-second limits. Check your dashboard for monthly quota information.
+  Rate limit headers show per-second limits. Check your dashboard for both your RPS limit and monthly quota information.
 </Note>
+
+<Tip>
+  Enterprise plans can request custom RPS limits. Contact sales if you need higher throughput for your application.
+</Tip>
 
 ## Best Practices
 
-### 1. Respect the 10 req/s Limit
+### 1. Respect Your RPS Limit
 
-Space out your requests to stay under 10 per second:
+Space out your requests to stay under your rate limit (default: 20 per second for Trial plans):
 
 <CodeGroup>
 
 ```javascript JavaScript
 async function fetchMultipleProfiles(profileUrls, apiKey) {
-  const delay = 100; // 100ms = 10 req/s max
+  const delay = 50; // 50ms = 20 req/s max
   const results = [];
   
   for (const url of profileUrls) {
@@ -134,7 +139,7 @@ import time
 import requests
 
 def fetch_multiple_profiles(profile_urls, api_key):
-    delay = 0.1  # 100ms = 10 req/s max
+    delay = 0.05  # 50ms = 20 req/s max
     results = []
     
     for url in profile_urls:
@@ -200,7 +205,7 @@ Limit concurrent requests to respect the rate limit:
 
 ```javascript
 class RateLimiter {
-  constructor(maxPerSecond = 10) {
+  constructor(maxPerSecond = 20) {
     this.maxPerSecond = maxPerSecond;
     this.queue = [];
     this.processing = 0;
@@ -228,7 +233,7 @@ class RateLimiter {
   }
 }
 
-const limiter = new RateLimiter(10);
+const limiter = new RateLimiter(20);
 
 await limiter.add(() => fetchProfile(url1));
 await limiter.add(() => fetchProfile(url2));
@@ -300,15 +305,15 @@ async function getCachedProfile(profileUrl, apiKey) {
 
 ### Batch Processing
 
-Processing 100 profiles at 10 req/s:
+Processing 100 profiles at 20 req/s:
 
 ```
-100 profiles ÷ 10 req/s = 10 seconds minimum
+100 profiles ÷ 20 req/s = 5 seconds minimum
 ```
 
 Add buffer time for network latency and processing:
 ```
-Estimated time: 12-15 seconds
+Estimated time: 6-8 seconds
 ```
 
 ### Real-Time Applications
@@ -330,15 +335,15 @@ For real-time applications making frequent requests:
 
 ```json
 {
-  "error": "Rate limit exceeded. Maximum 10 requests per second."
+  "error": "Rate limit exceeded. Try again later."
 }
 ```
 
-**Cause**: More than 10 requests in one second
+**Cause**: Exceeded your per-second rate limit
 
 **Solution**:
 - Wait 1 second before retrying
-- Implement request spacing (100ms between requests)
+- Implement request spacing based on your RPS limit
 - Use rate limiting library
 
 ### 429 Too Many Requests (Monthly Quota)

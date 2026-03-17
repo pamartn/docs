@@ -150,7 +150,7 @@
             "description": "Unauthorized - Invalid or missing API key"
           },
           "429": {
-            "description": "Too many requests - Quota exceeded"
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
           }
         }
       }
@@ -264,7 +264,7 @@
             "description": "Unauthorized - Invalid or missing API key"
           },
           "429": {
-            "description": "Too many requests - Quota exceeded"
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
           }
         }
       }
@@ -440,7 +440,7 @@
             "description": "Unauthorized - Invalid or missing API key"
           },
           "429": {
-            "description": "Too many requests - Quota exceeded"
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
           }
         }
       }
@@ -550,7 +550,160 @@
             "description": "Unauthorized - Invalid or missing API key"
           },
           "429": {
-            "description": "Too many requests - Quota exceeded"
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+          }
+        }
+      }
+    },
+    "/api/v1/profile/reactions": {
+      "get": {
+        "summary": "Get posts a LinkedIn profile has reacted to",
+        "description": "Fetch posts that a LinkedIn profile has reacted to (liked, loved, etc.) with the reaction type and full post details. The `post` object in each reaction has the same shape as items returned by `GET /api/v1/posts`.",
+        "parameters": [
+          {
+            "name": "profileUrlOrUrn",
+            "in": "query",
+            "required": true,
+            "description": "LinkedIn profile URL or URN",
+            "schema": {
+              "type": "string",
+              "example": "https://www.linkedin.com/in/username"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "Number of reactions to fetch (default: 10)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination (default: 0)",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "paginationToken",
+            "in": "query",
+            "required": false,
+            "description": "Token for fetching the next page of reactions. Use the paginationToken from the previous response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched profile reactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reactions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "reactionType": {
+                            "type": "string",
+                            "enum": ["LIKE", "EMPATHY", "ENTERTAINMENT", "INTEREST", "PRAISE", "APPRECIATION"],
+                            "description": "The type of reaction: LIKE (Like), EMPATHY (Love), ENTERTAINMENT (Funny), INTEREST (Insightful), PRAISE (Celebrate), APPRECIATION (Support)"
+                          },
+                          "post": {
+                            "type": "object",
+                            "description": "The post that was reacted to. Same shape as items from GET /api/v1/posts.",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "example": "urn:li:activity:1234567890"
+                              },
+                              "content": {
+                                "type": "string",
+                                "example": "This is a LinkedIn post content..."
+                              },
+                              "date": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "reactionCount": {
+                                "type": "integer"
+                              },
+                              "commentCount": {
+                                "type": "integer"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "videoUrl": {
+                                "type": "string"
+                              },
+                              "carouselPdfUrl": {
+                                "type": "string"
+                              },
+                              "profile": {
+                                "type": "object",
+                                "required": ["urn", "name", "headline", "url", "imageUrl"],
+                                "properties": {
+                                  "urn": {
+                                    "type": "string",
+                                    "example": "urn:li:fsd_profile:ACoAAABCDEF"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                  },
+                                  "headline": {
+                                    "type": "string",
+                                    "example": "Software Engineer at Tech Company"
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "example": "https://www.linkedin.com/in/johndoe"
+                                  },
+                                  "imageUrl": {
+                                    "type": "string",
+                                    "example": "https://media.licdn.com/dms/image/..."
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "paginationToken": {
+                      "type": "string",
+                      "description": "Token for fetching the next page"
+                    },
+                    "hasMore": {
+                      "type": "boolean",
+                      "description": "Whether more reactions are available"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "429": {
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
           }
         }
       }
@@ -620,7 +773,7 @@
             "description": "Unauthorized - Invalid or missing API key"
           },
           "429": {
-            "description": "Too many requests - Quota exceeded"
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
           }
         }
       }

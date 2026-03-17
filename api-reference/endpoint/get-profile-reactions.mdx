@@ -1,0 +1,379 @@
+---
+title: "Get Profile Reactions"
+openapi: "GET /api/v1/profile/reactions"
+description: "Fetch posts that a LinkedIn profile has reacted to"
+---
+
+## Endpoint
+
+```
+GET /api/v1/profile/reactions
+```
+
+## Authentication
+
+Include your API key in the request header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+## Parameters
+
+<ParamField query="profileUrlOrUrn" type="string" required>
+  LinkedIn profile URL or URN.
+  
+  Examples:
+  - `https://www.linkedin.com/in/username`
+  - `urn:li:member:123456789`
+</ParamField>
+
+<ParamField query="count" type="integer" default="10">
+  Number of reactions to fetch per page.
+  
+  - Minimum: 1
+  - Maximum: 50
+  - Default: 10
+</ParamField>
+
+<ParamField query="start" type="integer" default="0">
+  Offset for pagination.
+  
+  - Default: 0
+</ParamField>
+
+<ParamField query="paginationToken" type="string">
+  Token for fetching the next page of reactions. Returned from previous request when more reactions are available.
+</ParamField>
+
+## Response
+
+<ResponseField name="reactions" type="array">
+  Array of reactions, each containing the reaction type and the post that was reacted to
+
+<Expandable title="Reaction object">
+  <ResponseField name="reactionType" type="string">
+    The type of reaction the profile made. One of: `LIKE`, `EMPATHY` (Love), `ENTERTAINMENT` (Funny), `INTEREST` (Insightful), `PRAISE` (Celebrate), `APPRECIATION` (Support).
+  </ResponseField>
+  
+  <ResponseField name="post" type="object">
+    The post that was reacted to. Same shape as items from `GET /api/v1/posts`.
+    
+    <Expandable title="Post object">
+      <ResponseField name="id" type="string">
+        Unique post identifier (URN format)
+      </ResponseField>
+      
+      <ResponseField name="content" type="string">
+        Post content/text
+      </ResponseField>
+      
+      <ResponseField name="date" type="string">
+        ISO 8601 timestamp of when the post was published
+      </ResponseField>
+      
+      <ResponseField name="reactionCount" type="integer">
+        Total reactions count (likes, etc.)
+      </ResponseField>
+      
+      <ResponseField name="commentCount" type="integer">
+        Total comments count
+      </ResponseField>
+      
+      <ResponseField name="imageUrl" type="string">
+        URL of post image (if present)
+      </ResponseField>
+      
+      <ResponseField name="videoUrl" type="string">
+        URL of post video (if present)
+      </ResponseField>
+      
+      <ResponseField name="carouselPdfUrl" type="string">
+        URL of PDF document (if the post is a carousel/document post)
+      </ResponseField>
+      
+      <ResponseField name="profile" type="object" required>
+        Information about the post author. All fields are always present.
+        
+        <Expandable title="Profile object">
+          <ResponseField name="urn" type="string" required>
+            LinkedIn profile URN of the post author
+          </ResponseField>
+          
+          <ResponseField name="name" type="string" required>
+            Full name of the post author
+          </ResponseField>
+          
+          <ResponseField name="headline" type="string" required>
+            Professional headline of the post author
+          </ResponseField>
+          
+          <ResponseField name="url" type="string" required>
+            LinkedIn profile URL of the post author
+          </ResponseField>
+          
+          <ResponseField name="imageUrl" type="string" required>
+            Profile picture URL of the post author
+          </ResponseField>
+        </Expandable>
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+</Expandable>
+</ResponseField>
+
+<ResponseField name="paginationToken" type="string">
+  Token for fetching the next page of reactions. Only present when more reactions are available.
+</ResponseField>
+
+<ResponseField name="hasMore" type="boolean">
+  Indicates whether there are more reactions to fetch.
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.fetchin.io/api/v1/profile/reactions?profileUrlOrUrn=https://www.linkedin.com/in/williamhgates&count=5" \
+  -H "X-API-Key: your-api-key-here"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://api.fetchin.io/api/v1/profile/reactions?profileUrlOrUrn=https://www.linkedin.com/in/williamhgates&count=5',
+  {
+    headers: {
+      'X-API-Key': 'your-api-key-here'
+    }
+  }
+);
+
+const data = await response.json();
+console.log(data.reactions);
+```
+
+```python Python
+import requests
+
+headers = {
+    'X-API-Key': 'your-api-key-here'
+}
+
+params = {
+    'profileUrlOrUrn': 'https://www.linkedin.com/in/williamhgates',
+    'count': 5
+}
+
+response = requests.get(
+    'https://api.fetchin.io/api/v1/profile/reactions',
+    headers=headers,
+    params=params
+)
+
+data = response.json()
+print(data['reactions'])
+```
+
+```php PHP
+<?php
+
+$apiKey = 'your-api-key-here';
+$profileUrl = 'https://www.linkedin.com/in/williamhgates';
+$count = 5;
+
+$url = "https://api.fetchin.io/api/v1/profile/reactions?profileUrlOrUrn=" . urlencode($profileUrl) . "&count=" . $count;
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-API-Key: ' . $apiKey
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+
+curl_close($ch);
+print_r($data['reactions']);
+?>
+```
+
+</CodeGroup>
+
+## Example Response
+
+<ResponseExample>
+```json 200 Success
+{
+  "reactions": [
+    {
+      "reactionType": "LIKE",
+      "post": {
+        "id": "urn:li:activity:7422911506511486976",
+        "content": "One annoying discovery I made when I started selling Borumi is that refunds are not free...",
+        "date": "2025-02-01T10:30:00Z",
+        "reactionCount": 25,
+        "commentCount": 11,
+        "imageUrl": "https://media.licdn.com/dms/image/...",
+        "videoUrl": null,
+        "carouselPdfUrl": null,
+        "profile": {
+          "urn": "urn:li:fsd_profile:ACoAACHFUsoBILf",
+          "name": "Federico Terzi",
+          "headline": "Founder @ Borumi.com",
+          "url": "https://www.linkedin.com/in/federico-terzi",
+          "imageUrl": "https://media.licdn.com/dms/image/..."
+        }
+      }
+    },
+    {
+      "reactionType": "EMPATHY",
+      "post": {
+        "id": "urn:li:activity:7409540219328344064",
+        "content": "At 30, Thibaud Elziere was selling his company for 800M to Adobe...",
+        "date": "2025-01-20T14:20:00Z",
+        "reactionCount": 635,
+        "commentCount": 59,
+        "imageUrl": null,
+        "videoUrl": null,
+        "carouselPdfUrl": null,
+        "profile": {
+          "urn": "urn:li:fsd_profile:ACoAADGS3aIB50y",
+          "name": "Guillaume Moubeche",
+          "headline": "Founder @ lemlist",
+          "url": "https://www.linkedin.com/in/guillaume-moubeche-a026541b2",
+          "imageUrl": "https://media.licdn.com/dms/image/..."
+        }
+      }
+    },
+    {
+      "reactionType": "ENTERTAINMENT",
+      "post": {
+        "id": "urn:li:activity:7402610232759058433",
+        "content": "Friday Developers Fun. Explain to me Tech debt as I'm 5.",
+        "date": "2025-01-05T09:00:00Z",
+        "reactionCount": 4084,
+        "commentCount": 78,
+        "imageUrl": "https://media.licdn.com/dms/image/...",
+        "videoUrl": null,
+        "carouselPdfUrl": null,
+        "profile": {
+          "urn": "urn:li:fsd_profile:ACoAAAC60lcBKfZ",
+          "name": "Dr Milan Milanovic",
+          "headline": "Helping 400K+ engineers and leaders grow",
+          "url": "https://www.linkedin.com/in/milanmilanovic",
+          "imageUrl": "https://media.licdn.com/dms/image/..."
+        }
+      }
+    }
+  ],
+  "paginationToken": "dXJuOmxpOmFjdGl2aXR5Ojc0MDI5Njk4NzAyODU1NjU5NTItMTc2NTAwNTU1NzUzOA==",
+  "hasMore": true
+}
+```
+
+```json 400 Bad Request
+{
+  "error": "Missing profileUrlOrUrn parameter"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Failed to fetch LinkedIn data"
+}
+```
+</ResponseExample>
+
+## Pagination
+
+To fetch all reactions from a profile, use pagination:
+
+1. Make an initial request without `paginationToken`
+2. If `hasMore` is `true`, use the returned `paginationToken` in your next request
+3. Continue until `hasMore` is `false`
+
+```javascript
+async function fetchAllReactions(profileUrl) {
+  const allReactions = [];
+  let paginationToken = null;
+  let hasMore = true;
+
+  while (hasMore) {
+    const params = new URLSearchParams({
+      profileUrlOrUrn: profileUrl,
+      count: '20'
+    });
+    if (paginationToken) {
+      params.set('paginationToken', paginationToken);
+    }
+
+    const response = await fetch(
+      `https://api.fetchin.io/api/v1/profile/reactions?${params}`,
+      { headers: { 'X-API-Key': 'your-api-key-here' } }
+    );
+
+    const data = await response.json();
+    allReactions.push(...data.reactions);
+    paginationToken = data.paginationToken;
+    hasMore = data.hasMore;
+  }
+
+  return allReactions;
+}
+```
+
+## Reaction Types
+
+| Value | LinkedIn Label | Description |
+|-------|---------------|-------------|
+| `LIKE` | Like | Standard like reaction |
+| `EMPATHY` | Love | Heart/love reaction |
+| `ENTERTAINMENT` | Funny | Laughing face reaction |
+| `INTEREST` | Insightful | Lightbulb/insightful reaction |
+| `PRAISE` | Celebrate | Clapping/celebrate reaction |
+| `APPRECIATION` | Support | Hands/support reaction |
+
+## Notes
+
+<Info>
+  This endpoint counts as 1 request toward your monthly quota per API call, regardless of the `count` parameter value. Failed requests (errors) do not count against your quota.
+</Info>
+
+<Warning>
+  Reactions are returned in reverse chronological order (most recent reactions first). The `post` object within each reaction has the same shape as items from `GET /api/v1/posts`, so you can reuse the same types in your client code.
+</Warning>
+
+<Tip>
+  Use the `paginationToken` to efficiently paginate through a profile's reaction history without re-fetching already retrieved reactions.
+</Tip>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Competitive intelligence" icon="chart-line">
+    Monitor what content your competitors are engaging with
+  </Card>
+  <Card title="Interest analysis" icon="heart">
+    Understand a prospect's interests based on the posts they react to
+  </Card>
+  <Card title="Content research" icon="magnifying-glass">
+    Discover trending content in your industry by analyzing reactions of key influencers
+  </Card>
+  <Card title="Lead scoring" icon="star">
+    Enrich lead profiles with engagement activity data
+  </Card>
+</CardGroup>
