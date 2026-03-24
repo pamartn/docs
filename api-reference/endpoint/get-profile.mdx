@@ -86,6 +86,10 @@ X-API-Key: your-api-key-here
     Country name, e.g. "United States", "France"
   </ResponseField>
 
+  <ResponseField name="geoUrn" type="string">
+    LinkedIn geo URN, e.g. "urn:li:fsd_geo:104116203"
+  </ResponseField>
+
   <ResponseField name="connectionType" type="string">
     Relationship to the authenticated account, e.g. "OUT_OF_NETWORK", "CONNECTED"
   </ResponseField>
@@ -130,44 +134,116 @@ X-API-Key: your-api-key-here
     Whether the profile has a LinkedIn verification badge
   </ResponseField>
 
-  <ResponseField name="experiences" type="array">
-    Work experience history
-    
-<Expandable title="Experience object">
-      <ResponseField name="name" type="string">
-        Company name
+  <ResponseField name="creatorInfo" type="object">
+    Creator mode information (only present if profile has creator mode)
+
+    <Expandable title="CreatorInfo object">
+      <ResponseField name="hashTags" type="array">
+        Creator hashtags, e.g. ["#books", "#climatechange"]
       </ResponseField>
-      
-      <ResponseField name="jobTitle" type="string">
-        Job title/role
-      </ResponseField>
-      
-      <ResponseField name="description" type="string">
-        Role description
-      </ResponseField>
-      
-      <ResponseField name="dateRange" type="string">
-        Date range (e.g., "Jan 2020 - Present")
+
+      <ResponseField name="website" type="string">
+        Creator website URL (null if not set)
       </ResponseField>
     </Expandable>
   </ResponseField>
-  
+
+  <ResponseField name="experiences" type="array">
+    Work experience history
+
+    <Expandable title="Experience object">
+      <ResponseField name="name" type="string">
+        Company name
+      </ResponseField>
+
+      <ResponseField name="jobTitle" type="string">
+        Job title/role
+      </ResponseField>
+
+      <ResponseField name="description" type="string">
+        Role description
+      </ResponseField>
+
+      <ResponseField name="dateRange" type="string">
+        Date range (e.g., "Sep 2016 - Sep 2019")
+      </ResponseField>
+
+      <ResponseField name="locationName" type="string">
+        Job location (e.g., "Paris, Île-de-France, France")
+      </ResponseField>
+
+      <ResponseField name="employmentType" type="string">
+        Employment type (e.g., "Freelance", "Part-time")
+      </ResponseField>
+
+      <ResponseField name="timePeriod" type="object">
+        Structured time period with startDate and endDate
+      </ResponseField>
+
+      <ResponseField name="totalDuration" type="string">
+        Duration string (e.g., "3 yrs 1 mo")
+      </ResponseField>
+
+      <ResponseField name="company" type="object">
+        Company details
+
+        <Expandable title="Company object">
+          <ResponseField name="name" type="string">
+            Company name
+          </ResponseField>
+
+          <ResponseField name="url" type="string">
+            Company LinkedIn URL
+          </ResponseField>
+
+          <ResponseField name="logo" type="string">
+            Company logo image URL
+          </ResponseField>
+        </Expandable>
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+
   <ResponseField name="educations" type="array">
     Education history
-    
+
     <Expandable title="Education object">
       <ResponseField name="name" type="string">
         School/University name
       </ResponseField>
-      
+
       <ResponseField name="description" type="string">
-        Degree type and field
+        Degree type and field of study combined
       </ResponseField>
-      
+
       <ResponseField name="dateRange" type="string">
-        Date range (e.g., "2016 - 2020")
+        Date range (e.g., "2016 - 2019")
+      </ResponseField>
+
+      <ResponseField name="degreeName" type="string">
+        Degree name (e.g., "MBA", "MSEE", "B. Tech")
+      </ResponseField>
+
+      <ResponseField name="fieldOfStudy" type="string">
+        Field of study (e.g., "Materials Science and Engineering")
+      </ResponseField>
+
+      <ResponseField name="schoolLogo" type="string">
+        School logo image URL
+      </ResponseField>
+
+      <ResponseField name="schoolUrl" type="string">
+        School LinkedIn URL
+      </ResponseField>
+
+      <ResponseField name="timePeriod" type="object">
+        Structured time period with startDate and endDate
       </ResponseField>
     </Expandable>
+  </ResponseField>
+
+  <ResponseField name="volunteerCauses" type="array">
+    Volunteer causes listed on the profile (string array, e.g., ["Education", "Science and Technology"])
   </ResponseField>
 
   <ResponseField name="skills" type="array">
@@ -301,7 +377,12 @@ print_r($profile);
   "countryCode": "US",
   "geoLocationName": "Seattle, Washington, United States",
   "geoCountryName": "United States",
+  "geoUrn": "urn:li:fsd_geo:104116203",
   "connectionType": "OUT_OF_NETWORK",
+  "creatorInfo": {
+    "hashTags": ["#books", "#climatechange", "#healthcare", "#innovation", "#sustainability"],
+    "website": "https://gatesnot.es/tgn"
+  },
   "jobTitle": "Co-chair",
   "companyName": "Gates Foundation",
   "companyPublicId": "gates-foundation",
@@ -317,25 +398,50 @@ print_r($profile);
       "name": "Gates Foundation",
       "jobTitle": "Co-chair",
       "description": "",
-      "dateRange": "2000 - Present · 26 yrs"
+      "dateRange": "2000 - Present",
+      "timePeriod": {
+        "startDate": { "year": 2000 },
+        "endDate": null
+      },
+      "company": {
+        "url": "https://www.linkedin.com/company/gates-foundation/",
+        "name": "Gates Foundation",
+        "logo": "https://media.licdn.com/dms/image/..."
+      }
     },
     {
       "name": "Microsoft",
       "jobTitle": "Co-founder",
       "description": "",
-      "dateRange": "1975 - Present · 51 yrs"
+      "dateRange": "1975 - Present",
+      "timePeriod": {
+        "startDate": { "year": 1975 },
+        "endDate": null
+      },
+      "company": {
+        "url": "https://www.linkedin.com/company/microsoft/",
+        "name": "Microsoft",
+        "logo": "https://media.licdn.com/dms/image/..."
+      }
     }
   ],
   "educations": [
     {
       "name": "Harvard University",
       "description": "",
-      "dateRange": "1973 - 1975"
+      "dateRange": "1973 - 1975",
+      "schoolLogo": "https://media.licdn.com/dms/image/...",
+      "schoolUrl": "https://www.linkedin.com/school/harvard-university/",
+      "timePeriod": {
+        "startDate": { "year": 1973 },
+        "endDate": { "year": 1975 }
+      }
     }
   ],
   "skills": [],
   "languages": [],
-  "certifications": []
+  "certifications": [],
+  "volunteerCauses": []
 }
 ```
 

@@ -499,21 +499,27 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "Company name"
+                          "name": { "type": "string", "description": "Company name" },
+                          "jobTitle": { "type": "string", "description": "Job title/role" },
+                          "description": { "type": "string", "description": "Role description" },
+                          "dateRange": { "type": "string", "description": "Date range" },
+                          "locationName": { "type": "string", "description": "Job location" },
+                          "employmentType": { "type": "string", "description": "Employment type (e.g., Freelance, Part-time)" },
+                          "timePeriod": {
+                            "type": "object",
+                            "properties": {
+                              "startDate": { "type": "object", "properties": { "month": { "type": "number" }, "year": { "type": "number" } } },
+                              "endDate": { "type": ["object", "null"], "properties": { "month": { "type": "number" }, "year": { "type": "number" } } }
+                            }
                           },
-                          "jobTitle": {
-                            "type": "string",
-                            "description": "Job title/role"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "Role description"
-                          },
-                          "dateRange": {
-                            "type": "string",
-                            "description": "Date range (e.g., 'Jan 2020 - Present')"
+                          "totalDuration": { "type": "string", "description": "Duration string (e.g., 3 yrs 1 mo)" },
+                          "company": {
+                            "type": "object",
+                            "properties": {
+                              "name": { "type": "string" },
+                              "url": { "type": "string", "description": "Company LinkedIn URL" },
+                              "logo": { "type": "string", "description": "Company logo URL" }
+                            }
                           }
                         }
                       }
@@ -523,20 +529,27 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": {
-                            "type": "string",
-                            "description": "School/University name"
-                          },
-                          "description": {
-                            "type": "string",
-                            "description": "Degree type and field"
-                          },
-                          "dateRange": {
-                            "type": "string",
-                            "description": "Date range (e.g., '2016 - 2020')"
+                          "name": { "type": "string", "description": "School/University name" },
+                          "description": { "type": "string", "description": "Degree and field combined" },
+                          "dateRange": { "type": "string", "description": "Date range" },
+                          "degreeName": { "type": "string", "description": "Degree name (e.g., MBA, MSEE)" },
+                          "fieldOfStudy": { "type": "string", "description": "Field of study" },
+                          "schoolLogo": { "type": "string", "description": "School logo URL" },
+                          "schoolUrl": { "type": "string", "description": "School LinkedIn URL" },
+                          "timePeriod": {
+                            "type": "object",
+                            "properties": {
+                              "startDate": { "type": "object", "properties": { "year": { "type": "number" } } },
+                              "endDate": { "type": "object", "properties": { "year": { "type": "number" } } }
+                            }
                           }
                         }
                       }
+                    },
+                    "volunteerCauses": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "description": "Volunteer causes listed on the profile"
                     },
                     "skills": {
                       "type": "array",
@@ -610,9 +623,28 @@
                       "type": "string",
                       "description": "Country name"
                     },
+                    "geoUrn": {
+                      "type": "string",
+                      "description": "LinkedIn geo URN"
+                    },
                     "connectionType": {
                       "type": "string",
                       "description": "Relationship to the authenticated account"
+                    },
+                    "creatorInfo": {
+                      "type": "object",
+                      "description": "Creator mode information",
+                      "properties": {
+                        "hashTags": {
+                          "type": "array",
+                          "items": { "type": "string" },
+                          "description": "Creator hashtags"
+                        },
+                        "website": {
+                          "type": ["string", "null"],
+                          "description": "Creator website URL"
+                        }
+                      }
                     },
                     "jobTitle": {
                       "type": "string",
