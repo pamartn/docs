@@ -537,6 +537,122 @@
                           }
                         }
                       }
+                    },
+                    "skills": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Skill name"
+                          }
+                        }
+                      }
+                    },
+                    "languages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Language name"
+                          },
+                          "proficiency": {
+                            "type": "string",
+                            "description": "Proficiency level"
+                          }
+                        }
+                      }
+                    },
+                    "certifications": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Certification name"
+                          },
+                          "authority": {
+                            "type": "string",
+                            "description": "Issuing authority"
+                          },
+                          "dateRange": {
+                            "type": "string",
+                            "description": "Date range"
+                          }
+                        }
+                      }
+                    },
+                    "coverImageUrl": {
+                      "type": "string",
+                      "description": "Profile banner/background image URL"
+                    },
+                    "publicIdentifier": {
+                      "type": "string",
+                      "description": "LinkedIn public identifier (slug)"
+                    },
+                    "profileId": {
+                      "type": "string",
+                      "description": "LinkedIn member identifier"
+                    },
+                    "countryCode": {
+                      "type": "string",
+                      "description": "ISO country code"
+                    },
+                    "geoLocationName": {
+                      "type": "string",
+                      "description": "Full geographic location string"
+                    },
+                    "geoCountryName": {
+                      "type": "string",
+                      "description": "Country name"
+                    },
+                    "connectionType": {
+                      "type": "string",
+                      "description": "Relationship to the authenticated account"
+                    },
+                    "jobTitle": {
+                      "type": "string",
+                      "description": "Current job title"
+                    },
+                    "companyName": {
+                      "type": "string",
+                      "description": "Current company name"
+                    },
+                    "companyPublicId": {
+                      "type": "string",
+                      "description": "Current company LinkedIn slug"
+                    },
+                    "companyLinkedinUrl": {
+                      "type": "string",
+                      "description": "Current company LinkedIn URL"
+                    },
+                    "followerCount": {
+                      "type": "number",
+                      "description": "Number of followers"
+                    },
+                    "connectionsCount": {
+                      "type": "number",
+                      "description": "Number of connections"
+                    },
+                    "creator": {
+                      "type": "boolean",
+                      "description": "Whether Creator mode is enabled"
+                    },
+                    "influencer": {
+                      "type": "boolean",
+                      "description": "Whether the profile is a LinkedIn Influencer"
+                    },
+                    "premium": {
+                      "type": "boolean",
+                      "description": "Whether the profile has LinkedIn Premium"
+                    },
+                    "isVerified": {
+                      "type": "boolean",
+                      "description": "Whether the profile has a verification badge"
                     }
                   }
                 }

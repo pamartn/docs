@@ -61,7 +61,75 @@ X-API-Key: your-api-key-here
   <ResponseField name="profilePictureUrl" type="string">
     Profile picture URL
   </ResponseField>
-  
+
+  <ResponseField name="coverImageUrl" type="string">
+    Profile banner/background image URL (optional, not all profiles have one)
+  </ResponseField>
+
+  <ResponseField name="publicIdentifier" type="string">
+    LinkedIn public identifier (slug), e.g. "williamhgates"
+  </ResponseField>
+
+  <ResponseField name="profileId" type="string">
+    LinkedIn member identifier, e.g. "ACoAAA8BYqEBCGLg_vT..."
+  </ResponseField>
+
+  <ResponseField name="countryCode" type="string">
+    ISO country code, e.g. "US", "FR"
+  </ResponseField>
+
+  <ResponseField name="geoLocationName" type="string">
+    Full geographic location string, e.g. "Paris, Île-de-France, France"
+  </ResponseField>
+
+  <ResponseField name="geoCountryName" type="string">
+    Country name, e.g. "United States", "France"
+  </ResponseField>
+
+  <ResponseField name="connectionType" type="string">
+    Relationship to the authenticated account, e.g. "OUT_OF_NETWORK", "CONNECTED"
+  </ResponseField>
+
+  <ResponseField name="jobTitle" type="string">
+    Current job title, e.g. "Co-chair", "CEO"
+  </ResponseField>
+
+  <ResponseField name="companyName" type="string">
+    Current company name, e.g. "Gates Foundation"
+  </ResponseField>
+
+  <ResponseField name="companyPublicId" type="string">
+    Current company LinkedIn slug, e.g. "gates-foundation"
+  </ResponseField>
+
+  <ResponseField name="companyLinkedinUrl" type="string">
+    Current company LinkedIn URL
+  </ResponseField>
+
+  <ResponseField name="followerCount" type="number">
+    Number of followers
+  </ResponseField>
+
+  <ResponseField name="connectionsCount" type="number">
+    Number of connections
+  </ResponseField>
+
+  <ResponseField name="creator" type="boolean">
+    Whether the profile has LinkedIn Creator mode enabled
+  </ResponseField>
+
+  <ResponseField name="influencer" type="boolean">
+    Whether the profile is a LinkedIn Influencer
+  </ResponseField>
+
+  <ResponseField name="premium" type="boolean">
+    Whether the profile has a LinkedIn Premium subscription
+  </ResponseField>
+
+  <ResponseField name="isVerified" type="boolean">
+    Whether the profile has a LinkedIn verification badge
+  </ResponseField>
+
   <ResponseField name="experiences" type="array">
     Work experience history
     
@@ -98,6 +166,48 @@ X-API-Key: your-api-key-here
       
       <ResponseField name="dateRange" type="string">
         Date range (e.g., "2016 - 2020")
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+
+  <ResponseField name="skills" type="array">
+    Professional skills listed on the profile
+
+    <Expandable title="Skill object">
+      <ResponseField name="name" type="string">
+        Skill name, e.g. "JavaScript", "Leadership"
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+
+  <ResponseField name="languages" type="array">
+    Languages listed on the profile
+
+    <Expandable title="Language object">
+      <ResponseField name="name" type="string">
+        Language name, e.g. "English", "French"
+      </ResponseField>
+
+      <ResponseField name="proficiency" type="string">
+        Proficiency level (may be empty)
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+
+  <ResponseField name="certifications" type="array">
+    Licenses and certifications
+
+    <Expandable title="Certification object">
+      <ResponseField name="name" type="string">
+        Certification name
+      </ResponseField>
+
+      <ResponseField name="authority" type="string">
+        Issuing authority
+      </ResponseField>
+
+      <ResponseField name="dateRange" type="string">
+        Date range
       </ResponseField>
     </Expandable>
   </ResponseField>
@@ -178,34 +288,54 @@ print_r($profile);
 <ResponseExample>
 ```json 200 Success
 {
-  "id": "urn:li:fsd_profile:ACoAAABCDEF",
-  "firstName": "William",
+  "id": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc",
+  "firstName": "Bill",
   "lastName": "Gates",
-  "title": "Co-chair, Bill & Melinda Gates Foundation",
-  "description": "Co-chair of the Bill & Melinda Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.",
+  "title": "Chair, Gates Foundation and Founder, Breakthrough Energy",
+  "description": "Chair of the Gates Foundation. Founder of Breakthrough Energy. Co-founder of Microsoft. Voracious reader. Avid traveler. Active blogger.",
   "location": "Seattle, Washington, United States",
   "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+  "coverImageUrl": "https://media.licdn.com/dms/image/...",
+  "publicIdentifier": "williamhgates",
+  "profileId": "ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc",
+  "countryCode": "US",
+  "geoLocationName": "Seattle, Washington, United States",
+  "geoCountryName": "United States",
+  "connectionType": "OUT_OF_NETWORK",
+  "jobTitle": "Co-chair",
+  "companyName": "Gates Foundation",
+  "companyPublicId": "gates-foundation",
+  "companyLinkedinUrl": "https://www.linkedin.com/company/gates-foundation/",
+  "followerCount": 40076104,
+  "connectionsCount": 8,
+  "creator": true,
+  "influencer": true,
+  "premium": true,
+  "isVerified": false,
   "experiences": [
     {
-      "name": "Bill & Melinda Gates Foundation",
+      "name": "Gates Foundation",
       "jobTitle": "Co-chair",
       "description": "",
-      "dateRange": "Jan 2000 - Present"
+      "dateRange": "2000 - Present · 26 yrs"
     },
     {
       "name": "Microsoft",
       "jobTitle": "Co-founder",
       "description": "",
-      "dateRange": "Apr 1975 - Mar 2020"
+      "dateRange": "1975 - Present · 51 yrs"
     }
   ],
   "educations": [
     {
       "name": "Harvard University",
-      "description": "Bachelor's degree, Computer Science",
+      "description": "",
       "dateRange": "1973 - 1975"
     }
-  ]
+  ],
+  "skills": [],
+  "languages": [],
+  "certifications": []
 }
 ```
 
