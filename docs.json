@@ -38,13 +38,24 @@
         ]
       },
       {
-        "group": "Endpoints",
+        "group": "Posts",
         "pages": [
           "api-reference/endpoint/get-posts",
           "api-reference/endpoint/get-posts-updates",
           "api-reference/endpoint/get-post-comments",
+          "api-reference/endpoint/get-post-reactions"
+        ]
+      },
+      {
+        "group": "Profile",
+        "pages": [
           "api-reference/endpoint/get-profile",
-          "api-reference/endpoint/get-profile-reactions",
+          "api-reference/endpoint/get-profile-reactions"
+        ]
+      },
+      {
+        "group": "Search",
+        "pages": [
           "api-reference/endpoint/get-search"
         ]
       }

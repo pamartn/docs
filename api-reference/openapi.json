@@ -275,13 +275,13 @@
         "description": "Fetch comments from a LinkedIn post including author information and replies (subcomments)",
         "parameters": [
           {
-            "name": "postUrn",
+            "name": "postUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "LinkedIn post URN",
+            "description": "LinkedIn post URL or URN",
             "schema": {
               "type": "string",
-              "example": "urn:li:ugcPost:7287782484287606784"
+              "example": "https://www.linkedin.com/posts/username_post-slug-1234567890-abcd"
             }
           },
           {
@@ -834,6 +834,113 @@
                     "paginationToken": {
                       "type": "string",
                       "description": "Token for fetching the next page"
+                    },
+                    "hasMore": {
+                      "type": "boolean",
+                      "description": "Whether more reactions are available"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid parameters"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "429": {
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+          }
+        }
+      }
+    },
+    "/api/v1/post/reactions": {
+      "get": {
+        "summary": "Get reactions on a LinkedIn post",
+        "description": "Fetch who reacted to a specific LinkedIn post, including their reaction type and profile information.",
+        "parameters": [
+          {
+            "name": "postUrlOrUrn",
+            "in": "query",
+            "required": true,
+            "description": "LinkedIn post URL or URN",
+            "schema": {
+              "type": "string",
+              "example": "https://www.linkedin.com/posts/username_post-slug-1234567890-abcd"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "Number of reactions to fetch (default: 100)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination (default: 0)",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched post reactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reactions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "reactionType": {
+                            "type": "string",
+                            "enum": ["LIKE", "EMPATHY", "ENTERTAINMENT", "INTEREST", "PRAISE", "APPRECIATION"],
+                            "description": "The type of reaction: LIKE (Like), EMPATHY (Love), ENTERTAINMENT (Funny), INTEREST (Insightful), PRAISE (Celebrate), APPRECIATION (Support)"
+                          },
+                          "actor": {
+                            "type": "object",
+                            "required": ["urn", "name", "headline", "profileUrl", "profilePictureUrl"],
+                            "properties": {
+                              "urn": {
+                                "type": "string",
+                                "example": "urn:li:fsd_profile:ACoAAABCDEF"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Jane Doe"
+                              },
+                              "headline": {
+                                "type": "string",
+                                "example": "Software Engineer at Tech Company"
+                              },
+                              "profileUrl": {
+                                "type": "string",
+                                "example": "https://www.linkedin.com/in/ACoAAABCDEF"
+                              },
+                              "profilePictureUrl": {
+                                "type": "string",
+                                "example": "https://media.licdn.com/dms/image/..."
+                              }
+                            }
+                          }
+                        }
+                      }
                     },
                     "hasMore": {
                       "type": "boolean",
