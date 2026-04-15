@@ -1,16 +1,16 @@
 ---
 title: "Quotas & Plans"
-description: "Understanding request quotas and plan limits"
+description: "Understanding credit quotas and plan limits"
 ---
 
 ## How Quotas Work
 
-Fetchin uses a quota system to track your API usage. Each API request consumes one request from your quota.
+Fetchin uses a quota system to track your API usage. Each API request consumes one credit from your quota.
 
-### Request Counting
+### Credit Counting
 
-- ✅ **Successful requests** - Count toward your quota
-- ✅ **Failed requests** (4xx, 5xx errors) - Do NOT count toward your quota
+- ✅ **Successful requests** - Count toward your credits
+- ✅ **Failed requests** (4xx, 5xx errors) - Do NOT count toward your credits
 - 🔄 **Quota renewal** - Happens automatically on your renewal date
 
 <Info>
@@ -21,7 +21,7 @@ Fetchin uses a quota system to track your API usage. Each API request consumes o
 
 <CardGroup cols={2}>
   <Card title="Trial Plan" icon="gift">
-    **1,000 requests/month**
+    **1,000 credits/month**
     
     Perfect for testing and small projects
     - Auto-created on signup
@@ -33,7 +33,7 @@ Fetchin uses a quota system to track your API usage. Each API request consumes o
     **Custom limits**
     
     For production workloads
-    - Custom monthly request limits
+    - Custom monthly credit limits
     - Custom RPS limits
     - Priority support
     - Volume discounts
@@ -47,11 +47,11 @@ Fetchin uses a quota system to track your API usage. Each API request consumes o
 
 Your dashboard shows real-time quota information:
 
-- **Requests Remaining** - How many requests you have left
+- **Credits Remaining** - How many credits you have left
 - **Plan Limit** - Your monthly quota
 - **RPS Limit** - Your requests per second limit
 - **Renewal Date** - When your quota will reset
-- **Usage Chart** - Daily breakdown of your requests
+- **Usage Chart** - Daily breakdown of your usage
 
 ### Checking Quota Programmatically
 
@@ -79,7 +79,7 @@ When your quota reaches 0, API requests will return a `429 Too Many Requests` er
     Contact sales for an Enterprise plan with higher limits
   </Step>
   <Step title="Purchase overage">
-    Coming soon - buy additional requests without upgrading
+    Coming soon - buy additional credits without upgrading
   </Step>
 </Steps>
 
@@ -87,8 +87,8 @@ When your quota reaches 0, API requests will return a `429 Too Many Requests` er
 
 We're working on overage billing that will let you:
 
-- Automatically purchase additional requests when quota is low
-- Pay per request for usage beyond your plan
+- Automatically purchase additional credits when quota is low
+- Pay per credit for usage beyond your plan
 - Never get blocked by quota limits
 - Set spending caps for cost control
 
@@ -125,6 +125,6 @@ Quotas reset monthly on your signup anniversary:
 - Time zone: UTC
 
 <Warning>
-  Unused requests do NOT carry over to the next month. Use them or lose them!
+  Unused credits do NOT carry over to the next month. Use them or lose them!
 </Warning>
 

@@ -22,7 +22,7 @@ Fetchin implements two types of rate limiting to ensure fair usage and system st
   <Card title="Monthly Quota" icon="calendar">
     **Plan-based**
     
-    Trial: 1,000 requests/month
+    Trial: 1,000 credits/month
     Enterprise: Custom
   </Card>
 </CardGroup>
@@ -52,17 +52,17 @@ Second 2: 20 requests ✅ (window slides, all succeed)
 
 ## Monthly Quota Limiting
 
-Total requests allowed per month based on your plan:
+Total credits allowed per month based on your plan:
 
-- **Trial Plan**: 1,000 requests/month
+- **Trial Plan**: 1,000 credits/month
 - **Enterprise Plan**: Custom limits
 
 ### How It Works
 
-- Each successful API request counts toward your monthly quota
+- Each successful API request consumes credits from your monthly quota
 - Failed requests (errors) also count toward quota
 - Quota resets on your renewal date (monthly anniversary of signup)
-- Unused requests do NOT carry over to next month
+- Unused credits do NOT carry over to next month
 
 ## Handling Rate Limit Errors
 
@@ -359,7 +359,7 @@ For real-time applications making frequent requests:
 **Solution**:
 - Wait for quota renewal
 - Upgrade to higher quota plan
-- Purchase additional requests (coming soon)
+- Purchase additional credits (coming soon)
 
 ## Monitoring
 
