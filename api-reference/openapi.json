@@ -963,6 +963,109 @@
         }
       }
     },
+    "/api/v1/profile/connections": {
+      "get": {
+        "summary": "Get profile connections",
+        "description": "Fetch connections of a LinkedIn profile. Returns paginated results with basic profile information for each connection.",
+        "parameters": [
+          {
+            "name": "profileUrlOrUrn",
+            "in": "query",
+            "required": true,
+            "description": "LinkedIn profile URL or URN",
+            "schema": {
+              "type": "string",
+              "example": "https://www.linkedin.com/in/username"
+            }
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "required": false,
+            "description": "Number of connections to fetch per page (default: 10)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 10
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "description": "Offset for pagination (default: 0)",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched connections",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["connections", "hasMore"],
+                  "properties": {
+                    "connections": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["name", "profileUrl"],
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Full name of the connection",
+                            "example": "John Doe"
+                          },
+                          "profileUrl": {
+                            "type": "string",
+                            "description": "LinkedIn profile URL",
+                            "example": "https://www.linkedin.com/in/johndoe"
+                          },
+                          "profilePictureUrl": {
+                            "type": "string",
+                            "description": "Profile picture URL",
+                            "example": "https://media.licdn.com/dms/image/..."
+                          },
+                          "headline": {
+                            "type": "string",
+                            "description": "Professional headline",
+                            "example": "Software Engineer at Tech Company"
+                          },
+                          "location": {
+                            "type": "string",
+                            "description": "Geographic location",
+                            "example": "San Francisco, CA"
+                          }
+                        }
+                      }
+                    },
+                    "hasMore": {
+                      "type": "boolean",
+                      "description": "Whether more connections are available"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Missing profileUrlOrUrn parameter"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key"
+          },
+          "429": {
+            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+          }
+        }
+      }
+    },
     "/api/v1/search": {
       "get": {
         "summary": "Search LinkedIn profiles",

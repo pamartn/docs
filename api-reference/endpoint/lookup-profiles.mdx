@@ -1,0 +1,234 @@
+---
+title: "Lookup Profiles"
+openapi: "GET /api/v1/profiles/lookup"
+description: "Find LinkedIn profiles by name"
+---
+
+## Endpoint
+
+```
+GET /api/v1/profiles/lookup
+```
+
+## Authentication
+
+Include your API key in the request header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+## Parameters
+
+<ParamField query="name" type="string" required>
+  Full or partial name to search. Minimum 2 characters. Matches across first and last name.
+
+  Examples:
+  - `Bill Gates`
+  - `Satya Nadella`
+  - `Elon`
+</ParamField>
+
+<ParamField query="sortBy" type="string" default="followers">
+  Sort order for results.
+
+  - `followers` — Most followed profiles first (default)
+  - `relevance` — Best name match first
+</ParamField>
+
+<ParamField query="countryCode" type="string">
+  ISO country code to narrow results.
+
+  Examples: `US`, `FR`, `IN`, `DE`
+</ParamField>
+
+## Response
+
+<ResponseField name="profiles" type="array">
+  Up to 5 matching profiles, sorted according to `sortBy`.
+
+<Expandable title="Profile object">
+  <ResponseField name="id" type="string">
+    LinkedIn profile URN (unique identifier)
+  </ResponseField>
+
+  <ResponseField name="firstName" type="string">
+    First name
+  </ResponseField>
+
+  <ResponseField name="lastName" type="string">
+    Last name
+  </ResponseField>
+
+  <ResponseField name="title" type="string">
+    Professional headline
+  </ResponseField>
+
+  <ResponseField name="profilePictureUrl" type="string">
+    Profile picture URL
+  </ResponseField>
+
+  <ResponseField name="location" type="string">
+    Geographic location
+  </ResponseField>
+
+  <ResponseField name="followerCount" type="number">
+    Number of followers
+  </ResponseField>
+
+  <ResponseField name="publicIdentifier" type="string">
+    LinkedIn public identifier (slug), e.g. "williamhgates"
+  </ResponseField>
+</Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.fetchin.io/api/v1/profiles/lookup?name=Bill%20Gates" \
+  -H "X-API-Key: your-api-key-here"
+```
+
+```javascript JavaScript
+const response = await fetch(
+  'https://api.fetchin.io/api/v1/profiles/lookup?name=Bill%20Gates',
+  {
+    headers: {
+      'X-API-Key': 'your-api-key-here'
+    }
+  }
+);
+
+const data = await response.json();
+console.log(data.profiles);
+```
+
+```python Python
+import requests
+
+headers = {
+    'X-API-Key': 'your-api-key-here'
+}
+
+params = {
+    'name': 'Bill Gates'
+}
+
+response = requests.get(
+    'https://api.fetchin.io/api/v1/profiles/lookup',
+    headers=headers,
+    params=params
+)
+
+data = response.json()
+print(data['profiles'])
+```
+
+```php PHP
+<?php
+
+$apiKey = 'your-api-key-here';
+$name = 'Bill Gates';
+
+$url = "https://api.fetchin.io/api/v1/profiles/lookup?name=" . urlencode($name);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-API-Key: ' . $apiKey
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+
+curl_close($ch);
+print_r($data['profiles']);
+?>
+```
+
+</CodeGroup>
+
+## Example Response
+
+<ResponseExample>
+```json 200 Success
+{
+  "profiles": [
+    {
+      "id": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc",
+      "firstName": "Bill",
+      "lastName": "Gates",
+      "title": "Chair, Gates Foundation and Founder, Breakthrough Energy",
+      "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+      "location": "Seattle, Washington, United States",
+      "followerCount": 40076104,
+      "publicIdentifier": "williamhgates"
+    },
+    {
+      "id": "urn:li:fsd_profile:ACoAAAxxxxxxx",
+      "firstName": "Bill",
+      "lastName": "Gates",
+      "title": "Senior Account Executive",
+      "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+      "location": "Chicago, Illinois, United States",
+      "followerCount": 3200,
+      "publicIdentifier": "billgates2"
+    }
+  ]
+}
+```
+
+```json 400 Bad Request
+{
+  "error": "name parameter is required and must be at least 2 characters"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Failed to fetch LinkedIn data"
+}
+```
+</ResponseExample>
+
+## Notes
+
+<Info>
+  This endpoint costs only **1 credit** per request, making it ideal for quick lookups and name resolution.
+</Info>
+
+<Tip>
+  Use this endpoint to resolve a person's name to their LinkedIn profile, then fetch full details with the [Get Profile](/api-reference/endpoint/get-profile) endpoint.
+</Tip>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Name resolution" icon="user">
+    Resolve a person's name to their LinkedIn profile URN
+  </Card>
+  <Card title="Identity verification" icon="shield-check">
+    Verify that a person exists on LinkedIn and confirm their identity
+  </Card>
+  <Card title="Quick discovery" icon="magnifying-glass">
+    Quickly find a specific person without needing advanced filters
+  </Card>
+  <Card title="Autocomplete" icon="keyboard">
+    Power a name autocomplete field in your application
+  </Card>
+</CardGroup>

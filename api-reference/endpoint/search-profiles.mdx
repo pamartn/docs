@@ -1,0 +1,449 @@
+---
+title: "Search Profiles (Advanced)"
+openapi: "GET /api/v1/profiles/search"
+description: "Search for LinkedIn profiles with advanced filters"
+---
+
+## Endpoint
+
+```
+GET /api/v1/profiles/search
+```
+
+## Authentication
+
+Include your API key in the request header:
+
+```bash
+X-API-Key: your-api-key-here
+```
+
+## Parameters
+
+<ParamField query="limit" type="number" required>
+  Number of profiles to return (1-100). Determines the credits charged: each result costs 100 credits.
+
+  Example: `limit=10` costs 1,000 credits.
+</ParamField>
+
+<ParamField query="keyword" type="string">
+  Search across headlines, job descriptions, and skills.
+
+  Examples:
+  - `machine learning engineer`
+  - `product manager`
+  - `data scientist`
+</ParamField>
+
+<ParamField query="sortBy" type="string" default="relevance">
+  Sort order for results.
+
+  - `relevance` — Best match first, boosted by follower count
+  - `followers` — Most followed profiles first
+</ParamField>
+
+<ParamField query="location" type="string">
+  Filter by geographic location.
+
+  Examples:
+  - `San Francisco`
+  - `France`
+  - `London, United Kingdom`
+</ParamField>
+
+<ParamField query="jobTitle" type="string">
+  Filter by current job title.
+
+  Examples:
+  - `CTO`
+  - `Product Manager`
+  - `Software Engineer`
+</ParamField>
+
+<ParamField query="companyName" type="string">
+  Filter by current company.
+
+  Examples:
+  - `Google`
+  - `Stripe`
+  - `Goldman Sachs`
+</ParamField>
+
+<ParamField query="skills" type="string">
+  Comma-separated list of skills to filter by. Profiles matching at least one of the listed skills will be returned.
+
+  Example: `Python,React,AWS`
+</ParamField>
+
+<ParamField query="minFollowers" type="number">
+  Minimum follower count. Use with `maxFollowers` for a range.
+
+  Example: `1000`
+</ParamField>
+
+<ParamField query="maxFollowers" type="number">
+  Maximum follower count. Use with `minFollowers` for a range.
+
+  Example: `50000`
+</ParamField>
+
+<ParamField query="creator" type="string">
+  Filter by LinkedIn Creator mode status. Pass `"true"` or `"false"`.
+</ParamField>
+
+<ParamField query="influencer" type="string">
+  Filter by LinkedIn Influencer status. Pass `"true"` or `"false"`.
+</ParamField>
+
+<ParamField query="premium" type="string">
+  Filter by LinkedIn Premium subscription. Pass `"true"` or `"false"`.
+</ParamField>
+
+<ParamField query="countryCode" type="string">
+  ISO country code to filter by geography.
+
+  Examples: `US`, `FR`, `DE`, `IN`
+</ParamField>
+
+<ParamField query="excludeUrns" type="string">
+  Comma-separated LinkedIn URNs to exclude from results. Useful for deduplication when making multiple calls.
+
+  Example: `urn:li:member:123,urn:li:member:456`
+</ParamField>
+
+<Warning>
+  At least one search filter is required (`keyword`, `location`, `jobTitle`, `companyName`, `skills`, `creator`, `influencer`, `premium`, or `countryCode`).
+</Warning>
+
+## Response
+
+<ResponseField name="total" type="number">
+  Total number of matching profiles.
+</ResponseField>
+
+<ResponseField name="profiles" type="array">
+  Array of matching LinkedIn profiles.
+
+<Expandable title="Profile object">
+  <ResponseField name="id" type="string">
+    LinkedIn profile URN (unique identifier)
+  </ResponseField>
+
+  <ResponseField name="firstName" type="string">
+    First name
+  </ResponseField>
+
+  <ResponseField name="lastName" type="string">
+    Last name
+  </ResponseField>
+
+  <ResponseField name="title" type="string">
+    Professional headline
+  </ResponseField>
+
+  <ResponseField name="description" type="string">
+    About/summary section
+  </ResponseField>
+
+  <ResponseField name="profilePictureUrl" type="string">
+    Profile picture URL
+  </ResponseField>
+
+  <ResponseField name="location" type="string">
+    Geographic location
+  </ResponseField>
+
+  <ResponseField name="followerCount" type="number">
+    Number of followers
+  </ResponseField>
+
+  <ResponseField name="connectionsCount" type="number">
+    Number of connections
+  </ResponseField>
+
+  <ResponseField name="publicIdentifier" type="string">
+    LinkedIn public identifier (slug), e.g. "williamhgates"
+  </ResponseField>
+
+  <ResponseField name="countryCode" type="string">
+    ISO country code, e.g. "US", "FR"
+  </ResponseField>
+
+  <ResponseField name="jobTitle" type="string">
+    Current job title
+  </ResponseField>
+
+  <ResponseField name="companyName" type="string">
+    Current company name
+  </ResponseField>
+
+  <ResponseField name="creator" type="boolean">
+    Whether the profile has LinkedIn Creator mode enabled
+  </ResponseField>
+
+  <ResponseField name="influencer" type="boolean">
+    Whether the profile is a LinkedIn Influencer
+  </ResponseField>
+
+  <ResponseField name="premium" type="boolean">
+    Whether the profile has a LinkedIn Premium subscription
+  </ResponseField>
+
+  <ResponseField name="skills" type="array">
+    Professional skills
+
+    <Expandable title="Skill object">
+      <ResponseField name="name" type="string">
+        Skill name
+      </ResponseField>
+
+      <ResponseField name="endorsements" type="number">
+        Number of endorsements
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+
+  <ResponseField name="experiences" type="array">
+    Work experience history
+
+    <Expandable title="Experience object">
+      <ResponseField name="name" type="string">
+        Company name
+      </ResponseField>
+
+      <ResponseField name="jobTitle" type="string">
+        Job title/role
+      </ResponseField>
+
+      <ResponseField name="description" type="string">
+        Role description
+      </ResponseField>
+
+      <ResponseField name="dateRange" type="string">
+        Date range, e.g. "2020 - Present"
+      </ResponseField>
+
+      <ResponseField name="locationName" type="string">
+        Job location
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+
+  <ResponseField name="educations" type="array">
+    Education history
+
+    <Expandable title="Education object">
+      <ResponseField name="name" type="string">
+        School/University name
+      </ResponseField>
+
+      <ResponseField name="degreeName" type="string">
+        Degree name
+      </ResponseField>
+
+      <ResponseField name="fieldOfStudy" type="string">
+        Field of study
+      </ResponseField>
+
+      <ResponseField name="dateRange" type="string">
+        Date range
+      </ResponseField>
+    </Expandable>
+  </ResponseField>
+</Expandable>
+</ResponseField>
+
+## Example Request
+
+<CodeGroup>
+
+```bash cURL
+curl -X GET "https://api.fetchin.io/api/v1/profiles/search?keyword=machine%20learning&countryCode=US&minFollowers=500&limit=5" \
+  -H "X-API-Key: your-api-key-here"
+```
+
+```javascript JavaScript
+const params = new URLSearchParams({
+  keyword: 'machine learning',
+  countryCode: 'US',
+  minFollowers: '500',
+  limit: '5',
+});
+
+const response = await fetch(
+  `https://api.fetchin.io/api/v1/profiles/search?${params}`,
+  {
+    headers: {
+      'X-API-Key': 'your-api-key-here'
+    }
+  }
+);
+
+const data = await response.json();
+console.log(`Found ${data.total} profiles`);
+console.log(data.profiles);
+```
+
+```python Python
+import requests
+
+headers = {
+    'X-API-Key': 'your-api-key-here'
+}
+
+params = {
+    'keyword': 'machine learning',
+    'countryCode': 'US',
+    'minFollowers': 500,
+    'limit': 5,
+}
+
+response = requests.get(
+    'https://api.fetchin.io/api/v1/profiles/search',
+    headers=headers,
+    params=params
+)
+
+data = response.json()
+print(f"Found {data['total']} profiles")
+print(data['profiles'])
+```
+
+```php PHP
+<?php
+
+$apiKey = 'your-api-key-here';
+
+$params = http_build_query([
+    'keyword' => 'machine learning',
+    'countryCode' => 'US',
+    'minFollowers' => 500,
+    'limit' => 5,
+]);
+
+$url = "https://api.fetchin.io/api/v1/profiles/search?" . $params;
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'X-API-Key: ' . $apiKey
+]);
+
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+
+curl_close($ch);
+echo "Found " . $data['total'] . " profiles\n";
+print_r($data['profiles']);
+?>
+```
+
+</CodeGroup>
+
+## Example Response
+
+<ResponseExample>
+```json 200 Success
+{
+  "total": 1234,
+  "profiles": [
+    {
+      "id": "urn:li:fsd_profile:ACoAAAxxxxxx",
+      "firstName": "Sarah",
+      "lastName": "Chen",
+      "title": "Machine Learning Engineer at Google",
+      "description": "Building scalable ML systems...",
+      "profilePictureUrl": "https://media.licdn.com/dms/image/...",
+      "location": "San Francisco, California, United States",
+      "followerCount": 12500,
+      "connectionsCount": 500,
+      "publicIdentifier": "sarahchen",
+      "countryCode": "US",
+      "jobTitle": "Machine Learning Engineer",
+      "companyName": "Google",
+      "creator": false,
+      "influencer": false,
+      "premium": true,
+      "skills": [
+        { "name": "Machine Learning", "endorsements": 45 },
+        { "name": "Python", "endorsements": 38 },
+        { "name": "TensorFlow", "endorsements": 22 }
+      ],
+      "experiences": [
+        {
+          "name": "Google",
+          "jobTitle": "Machine Learning Engineer",
+          "description": "",
+          "dateRange": "2021 - Present",
+          "locationName": "San Francisco, CA"
+        }
+      ],
+      "educations": [
+        {
+          "name": "Stanford University",
+          "degreeName": "MS",
+          "fieldOfStudy": "Computer Science",
+          "dateRange": "2019 - 2021"
+        }
+      ]
+    }
+  ]
+}
+```
+
+```json 400 Bad Request
+{
+  "error": "Missing limit parameter"
+}
+```
+
+```json 401 Unauthorized
+{
+  "error": "Invalid API key"
+}
+```
+
+```json 429 Too Many Requests
+{
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+}
+```
+
+```json 500 Internal Server Error
+{
+  "error": "Failed to fetch LinkedIn data"
+}
+```
+</ResponseExample>
+
+## Notes
+
+<Info>
+  **Credits**: This endpoint charges `limit × 100` credits per request. For example, `limit=10` costs 1,000 credits. Only successful requests are charged.
+</Info>
+
+<Warning>
+  Response times may vary depending on the complexity of your filters.
+</Warning>
+
+<Tip>
+  Use `excludeUrns` to avoid duplicates when making multiple calls. Combine filters for precise targeting — for example, `jobTitle=CTO&companyName=&minFollowers=5000` finds high-profile CTOs.
+</Tip>
+
+## Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Lead generation" icon="users">
+    Find potential leads matching specific job titles, skills, or industries
+  </Card>
+  <Card title="Recruitment" icon="briefcase">
+    Search for candidates with specific skills, experience, and location
+  </Card>
+  <Card title="Market research" icon="magnifying-glass">
+    Analyze professionals in a specific niche, industry, or geography
+  </Card>
+  <Card title="Audience building" icon="chart-line">
+    Discover creators, influencers, and thought leaders by topic
+  </Card>
+</CardGroup>

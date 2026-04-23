@@ -50,13 +50,15 @@
         "group": "Profile",
         "pages": [
           "api-reference/endpoint/get-profile",
-          "api-reference/endpoint/get-profile-reactions"
+          "api-reference/endpoint/get-profile-reactions",
+          "api-reference/endpoint/get-profile-connections"
         ]
       },
       {
         "group": "Search",
         "pages": [
-          "api-reference/endpoint/get-search"
+          "api-reference/endpoint/search-profiles",
+          "api-reference/endpoint/lookup-profiles"
         ]
       }
     ],
