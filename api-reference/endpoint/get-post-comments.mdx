@@ -237,28 +237,57 @@ print_r($data);
 
 ```json 400 Bad Request
 {
-  "error": "Missing postUrlOrUrn parameter"
+  "error": "Missing postUrlOrUrn parameter",
+  "code": "MISSING_PARAMETER"
 }
 ```
 
 ```json 401 Unauthorized
 {
-  "error": "Invalid API key"
+  "error": "Invalid API key",
+  "code": "INVALID_API_KEY"
+}
+```
+
+```json 404 Not Found
+{
+  "error": "Unable to find post from url",
+  "code": "POST_NOT_FOUND"
 }
 ```
 
 ```json 429 Too Many Requests
 {
-  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal.",
+  "code": "QUOTA_EXHAUSTED"
 }
 ```
 
 ```json 500 Internal Server Error
 {
-  "error": "Failed to fetch LinkedIn data"
+  "error": "Internal server error",
+  "code": "INTERNAL_ERROR"
+}
+```
+
+```json 503 Service Unavailable
+{
+  "error": "Service temporarily unable to serve this request. Please retry.",
+  "code": "SERVICE_UNAVAILABLE"
 }
 ```
 </ResponseExample>
+
+## Errors
+
+See [Error Handling](/concepts/error-handling) for the full list of error codes and recommended handling.
+
+- `400` — `MISSING_PARAMETER` / `INVALID_URN`
+- `401` — `INVALID_API_KEY`
+- `404` — `POST_NOT_FOUND`
+- `429` — `RATE_LIMITED` / `QUOTA_EXHAUSTED`
+- `500` — `INTERNAL_ERROR`
+- `503` — `SERVICE_UNAVAILABLE`
 
 ## Pagination
 

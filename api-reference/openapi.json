@@ -18,6 +18,210 @@
         "in": "header",
         "name": "X-API-Key"
       }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "error",
+          "code"
+        ],
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Human-readable description of what went wrong. For display/logging; do not branch on this string."
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "MISSING_PARAMETER",
+              "INVALID_PARAMETER",
+              "INVALID_URN",
+              "UNAUTHENTICATED",
+              "INVALID_API_KEY",
+              "FORBIDDEN",
+              "NOT_FOUND",
+              "PROFILE_NOT_FOUND",
+              "POST_NOT_FOUND",
+              "COMPANY_NOT_FOUND",
+              "RATE_LIMITED",
+              "QUOTA_EXHAUSTED",
+              "INTERNAL_ERROR",
+              "UPSTREAM_ERROR",
+              "SERVICE_UNAVAILABLE",
+              "UPSTREAM_TIMEOUT"
+            ],
+            "description": "Stable, machine-readable error code. Branch your integration on this value, not on the HTTP status alone or the message text."
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Optional structured context (e.g. creditsNeeded on quota errors)."
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request - a required parameter is missing or a value is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "missingParameter": {
+                "value": {
+                  "error": "Missing profileUrlOrUrn parameter",
+                  "code": "MISSING_PARAMETER"
+                }
+              },
+              "invalidParameter": {
+                "value": {
+                  "error": "limit must be a number between 1 and 100",
+                  "code": "INVALID_PARAMETER"
+                }
+              },
+              "invalidUrn": {
+                "value": {
+                  "error": "Invalid URN format: foo",
+                  "code": "INVALID_URN"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - the X-API-Key header is missing or invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "missingApiKey": {
+                "value": {
+                  "error": "Missing API key. Include X-API-Key header.",
+                  "code": "UNAUTHENTICATED"
+                }
+              },
+              "invalidApiKey": {
+                "value": {
+                  "error": "Invalid API key",
+                  "code": "INVALID_API_KEY"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found - the request was served successfully but the requested LinkedIn entity does not exist.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "profileNotFound": {
+                "value": {
+                  "error": "LinkedIn profile not found",
+                  "code": "PROFILE_NOT_FOUND"
+                }
+              },
+              "postNotFound": {
+                "value": {
+                  "error": "Unable to find post from url",
+                  "code": "POST_NOT_FOUND"
+                }
+              },
+              "companyNotFound": {
+                "value": {
+                  "error": "Unable to find company slug from urn",
+                  "code": "COMPANY_NOT_FOUND"
+                }
+              }
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too many requests - either your per-second rate limit (RATE_LIMITED) or your monthly credit quota (QUOTA_EXHAUSTED) was exceeded. Branch on `code` to tell them apart.",
+        "headers": {
+          "Retry-After": {
+            "description": "Number of seconds to wait before retrying the request.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "rateLimited": {
+                "value": {
+                  "error": "Rate limit exceeded. Try again later.",
+                  "code": "RATE_LIMITED"
+                }
+              },
+              "quotaExhausted": {
+                "value": {
+                  "error": "Quota exceeded. Upgrade your plan or wait for renewal.",
+                  "code": "QUOTA_EXHAUSTED"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Service unavailable - our API is temporarily unable to serve this request (capacity exhausted or overloaded). This is on our side, not yours and not a LinkedIn outage. Retry with backoff, honoring the Retry-After header.",
+        "headers": {
+          "Retry-After": {
+            "description": "Number of seconds to wait before retrying the request.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "serviceUnavailable": {
+                "value": {
+                  "error": "Service temporarily unable to serve this request. Please retry.",
+                  "code": "SERVICE_UNAVAILABLE"
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal server error - an unexpected error occurred in our API. Safe to retry; contact support if it persists.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "internalError": {
+                "value": {
+                  "error": "Internal server error",
+                  "code": "INTERNAL_ERROR"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "security": [
@@ -86,7 +290,13 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "example": "urn:li:activity:1234567890"
+                        "example": "urn:li:activity:1234567890",
+                        "description": "Activity URN. References the post in the `urn:li:activity:*` namespace."
+                      },
+                      "shareUrn": {
+                        "type": "string",
+                        "example": "urn:li:ugcPost:7123456789012345678",
+                        "description": "Share URN. References the same post as `id` but in the `urn:li:share:*` or `urn:li:ugcPost:*` namespace (depends on the post type)."
                       },
                       "content": {
                         "type": "string",
@@ -102,6 +312,10 @@
                       "commentCount": {
                         "type": "integer"
                       },
+                      "sharesCount": {
+                        "type": "integer",
+                        "description": "Number of times the post was reshared."
+                      },
                       "imageUrl": {
                         "type": "string"
                       },
@@ -113,7 +327,13 @@
                       },
                       "profile": {
                         "type": "object",
-                        "required": ["urn", "name", "headline", "url", "imageUrl"],
+                        "required": [
+                          "urn",
+                          "name",
+                          "headline",
+                          "url",
+                          "imageUrl"
+                        ],
                         "properties": {
                           "urn": {
                             "type": "string",
@@ -144,13 +364,22 @@
             }
           },
           "400": {
-            "description": "Bad request - Invalid parameters"
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "429": {
-            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -233,7 +462,13 @@
                           },
                           "author": {
                             "type": "object",
-                            "required": ["id", "name", "headline", "profilePictureUrl", "profileUrl"],
+                            "required": [
+                              "id",
+                              "name",
+                              "headline",
+                              "profilePictureUrl",
+                              "profileUrl"
+                            ],
                             "properties": {
                               "id": {
                                 "type": "string",
@@ -320,13 +555,22 @@
             }
           },
           "400": {
-            "description": "Bad request - Invalid parameters"
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "429": {
-            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -385,26 +629,78 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": { "type": "string", "description": "Company name" },
-                          "jobTitle": { "type": "string", "description": "Job title/role" },
-                          "description": { "type": "string", "description": "Role description" },
-                          "dateRange": { "type": "string", "description": "Date range" },
-                          "locationName": { "type": "string", "description": "Job location" },
-                          "employmentType": { "type": "string", "description": "Employment type (e.g., Freelance, Part-time)" },
+                          "name": {
+                            "type": "string",
+                            "description": "Company name"
+                          },
+                          "jobTitle": {
+                            "type": "string",
+                            "description": "Job title/role"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Role description"
+                          },
+                          "dateRange": {
+                            "type": "string",
+                            "description": "Date range"
+                          },
+                          "locationName": {
+                            "type": "string",
+                            "description": "Job location"
+                          },
+                          "employmentType": {
+                            "type": "string",
+                            "description": "Employment type (e.g., Freelance, Part-time)"
+                          },
                           "timePeriod": {
                             "type": "object",
                             "properties": {
-                              "startDate": { "type": "object", "properties": { "month": { "type": "number" }, "year": { "type": "number" } } },
-                              "endDate": { "type": ["object", "null"], "properties": { "month": { "type": "number" }, "year": { "type": "number" } } }
+                              "startDate": {
+                                "type": "object",
+                                "properties": {
+                                  "month": {
+                                    "type": "number"
+                                  },
+                                  "year": {
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "endDate": {
+                                "type": [
+                                  "object",
+                                  "null"
+                                ],
+                                "properties": {
+                                  "month": {
+                                    "type": "number"
+                                  },
+                                  "year": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
                             }
                           },
-                          "totalDuration": { "type": "string", "description": "Duration string (e.g., 3 yrs 1 mo)" },
+                          "totalDuration": {
+                            "type": "string",
+                            "description": "Duration string (e.g., 3 yrs 1 mo)"
+                          },
                           "company": {
                             "type": "object",
                             "properties": {
-                              "name": { "type": "string" },
-                              "url": { "type": "string", "description": "Company LinkedIn URL" },
-                              "logo": { "type": "string", "description": "Company logo URL" }
+                              "name": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string",
+                                "description": "Company LinkedIn URL"
+                              },
+                              "logo": {
+                                "type": "string",
+                                "description": "Company logo URL"
+                              }
                             }
                           }
                         }
@@ -415,18 +711,53 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "name": { "type": "string", "description": "School/University name" },
-                          "description": { "type": "string", "description": "Degree and field combined" },
-                          "dateRange": { "type": "string", "description": "Date range" },
-                          "degreeName": { "type": "string", "description": "Degree name (e.g., MBA, MSEE)" },
-                          "fieldOfStudy": { "type": "string", "description": "Field of study" },
-                          "schoolLogo": { "type": "string", "description": "School logo URL" },
-                          "schoolUrl": { "type": "string", "description": "School LinkedIn URL" },
+                          "name": {
+                            "type": "string",
+                            "description": "School/University name"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Degree and field combined"
+                          },
+                          "dateRange": {
+                            "type": "string",
+                            "description": "Date range"
+                          },
+                          "degreeName": {
+                            "type": "string",
+                            "description": "Degree name (e.g., MBA, MSEE)"
+                          },
+                          "fieldOfStudy": {
+                            "type": "string",
+                            "description": "Field of study"
+                          },
+                          "schoolLogo": {
+                            "type": "string",
+                            "description": "School logo URL"
+                          },
+                          "schoolUrl": {
+                            "type": "string",
+                            "description": "School LinkedIn URL"
+                          },
                           "timePeriod": {
                             "type": "object",
                             "properties": {
-                              "startDate": { "type": "object", "properties": { "year": { "type": "number" } } },
-                              "endDate": { "type": "object", "properties": { "year": { "type": "number" } } }
+                              "startDate": {
+                                "type": "object",
+                                "properties": {
+                                  "year": {
+                                    "type": "number"
+                                  }
+                                }
+                              },
+                              "endDate": {
+                                "type": "object",
+                                "properties": {
+                                  "year": {
+                                    "type": "number"
+                                  }
+                                }
+                              }
                             }
                           }
                         }
@@ -434,7 +765,9 @@
                     },
                     "volunteerCauses": {
                       "type": "array",
-                      "items": { "type": "string" },
+                      "items": {
+                        "type": "string"
+                      },
                       "description": "Volunteer causes listed on the profile"
                     },
                     "skills": {
@@ -523,11 +856,16 @@
                       "properties": {
                         "hashTags": {
                           "type": "array",
-                          "items": { "type": "string" },
+                          "items": {
+                            "type": "string"
+                          },
                           "description": "Creator hashtags"
                         },
                         "website": {
-                          "type": ["string", "null"],
+                          "type": [
+                            "string",
+                            "null"
+                          ],
                           "description": "Creator website URL"
                         }
                       }
@@ -578,13 +916,22 @@
             }
           },
           "400": {
-            "description": "Bad request - Invalid parameters"
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "429": {
-            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -652,7 +999,14 @@
                         "properties": {
                           "reactionType": {
                             "type": "string",
-                            "enum": ["LIKE", "EMPATHY", "ENTERTAINMENT", "INTEREST", "PRAISE", "APPRECIATION"],
+                            "enum": [
+                              "LIKE",
+                              "EMPATHY",
+                              "ENTERTAINMENT",
+                              "INTEREST",
+                              "PRAISE",
+                              "APPRECIATION"
+                            ],
                             "description": "The type of reaction: LIKE (Like), EMPATHY (Love), ENTERTAINMENT (Funny), INTEREST (Insightful), PRAISE (Celebrate), APPRECIATION (Support)"
                           },
                           "post": {
@@ -661,7 +1015,13 @@
                             "properties": {
                               "id": {
                                 "type": "string",
-                                "example": "urn:li:activity:1234567890"
+                                "example": "urn:li:activity:1234567890",
+                                "description": "Activity URN. References the post in the `urn:li:activity:*` namespace."
+                              },
+                              "shareUrn": {
+                                "type": "string",
+                                "example": "urn:li:share:7123456789012345678",
+                                "description": "Share URN. References the same post as `id` but in the `urn:li:share:*` namespace."
                               },
                               "content": {
                                 "type": "string",
@@ -677,6 +1037,10 @@
                               "commentCount": {
                                 "type": "integer"
                               },
+                              "sharesCount": {
+                                "type": "integer",
+                                "description": "Number of times the post was reshared."
+                              },
                               "imageUrl": {
                                 "type": "string"
                               },
@@ -688,7 +1052,13 @@
                               },
                               "profile": {
                                 "type": "object",
-                                "required": ["urn", "name", "headline", "url", "imageUrl"],
+                                "required": [
+                                  "urn",
+                                  "name",
+                                  "headline",
+                                  "url",
+                                  "imageUrl"
+                                ],
                                 "properties": {
                                   "urn": {
                                     "type": "string",
@@ -731,13 +1101,22 @@
             }
           },
           "400": {
-            "description": "Bad request - Invalid parameters"
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "429": {
-            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -796,12 +1175,25 @@
                         "properties": {
                           "reactionType": {
                             "type": "string",
-                            "enum": ["LIKE", "EMPATHY", "ENTERTAINMENT", "INTEREST", "PRAISE", "APPRECIATION"],
+                            "enum": [
+                              "LIKE",
+                              "EMPATHY",
+                              "ENTERTAINMENT",
+                              "INTEREST",
+                              "PRAISE",
+                              "APPRECIATION"
+                            ],
                             "description": "The type of reaction: LIKE (Like), EMPATHY (Love), ENTERTAINMENT (Funny), INTEREST (Insightful), PRAISE (Celebrate), APPRECIATION (Support)"
                           },
                           "actor": {
                             "type": "object",
-                            "required": ["urn", "name", "headline", "profileUrl", "profilePictureUrl"],
+                            "required": [
+                              "urn",
+                              "name",
+                              "headline",
+                              "profileUrl",
+                              "profilePictureUrl"
+                            ],
                             "properties": {
                               "urn": {
                                 "type": "string",
@@ -838,13 +1230,22 @@
             }
           },
           "400": {
-            "description": "Bad request - Invalid parameters"
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
           },
           "429": {
-            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }
@@ -874,7 +1275,10 @@
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "required": ["name", "profileUrl"],
+                    "required": [
+                      "name",
+                      "profileUrl"
+                    ],
                     "properties": {
                       "name": {
                         "type": "string",
@@ -908,13 +1312,19 @@
             }
           },
           "400": {
-            "description": "Bad request - Missing keyword parameter"
+            "$ref": "#/components/responses/BadRequest"
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key"
+            "$ref": "#/components/responses/Unauthorized"
           },
           "429": {
-            "description": "Too many requests - Either RPS limit exceeded (per-second rate limit) or monthly quota exceeded"
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/ServiceUnavailable"
           }
         }
       }

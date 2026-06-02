@@ -61,11 +61,14 @@ Currently, quota information is only available through the dashboard. API endpoi
 
 ### What Happens When You Run Out?
 
-When your quota reaches 0, API requests will return a `429 Too Many Requests` error:
+When your quota reaches 0, API requests return a `429 Too Many Requests` error
+with `code: "QUOTA_EXHAUSTED"` (distinct from per-second `RATE_LIMITED`
+throttling — branch on `code`):
 
 ```json
 {
-  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal.",
+  "code": "QUOTA_EXHAUSTED"
 }
 ```
 

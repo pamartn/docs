@@ -43,7 +43,11 @@ X-API-Key: your-api-key-here
 
 <Expandable title="Post object">
   <ResponseField name="id" type="string">
-    Unique post identifier (URN format)
+    Activity URN of the post (`urn:li:activity:...`).
+  </ResponseField>
+
+  <ResponseField name="shareUrn" type="string">
+    Share URN of the post (`urn:li:share:...` or `urn:li:ugcPost:...` depending on post type). References the same post as `id` but in a different LinkedIn URN namespace.
   </ResponseField>
   
   <ResponseField name="content" type="string">
@@ -60,6 +64,10 @@ X-API-Key: your-api-key-here
   
   <ResponseField name="commentCount" type="integer">
     Total comments count
+  </ResponseField>
+
+  <ResponseField name="sharesCount" type="integer">
+    Total number of times the post was reshared.
   </ResponseField>
   
   <ResponseField name="imageUrl" type="string">
@@ -180,10 +188,12 @@ print_r($posts);
 [
   {
     "id": "urn:li:activity:7123456789012345678",
+    "shareUrn": "urn:li:ugcPost:7123456789012345678",
     "content": "Excited to announce our new initiative...",
     "date": "2024-01-15T10:30:00Z",
     "reactionCount": 127,
     "commentCount": 15,
+    "sharesCount": 12,
     "imageUrl": "https://media.licdn.com/dms/image/...",
     "videoUrl": null,
     "carouselPdfUrl": null,
@@ -197,10 +207,12 @@ print_r($posts);
   },
   {
     "id": "urn:li:activity:7123456789012345679",
+    "shareUrn": "urn:li:ugcPost:7123456789012345679",
     "content": "Reflecting on the past year and looking forward...",
     "date": "2024-01-10T14:20:00Z",
     "reactionCount": 89,
     "commentCount": 7,
+    "sharesCount": 4,
     "imageUrl": null,
     "videoUrl": "https://dms.licdn.com/playlist/...",
     "carouselPdfUrl": null,
@@ -217,28 +229,57 @@ print_r($posts);
 
 ```json 400 Bad Request
 {
-  "error": "Missing profileUrlOrUrn parameter"
+  "error": "Missing profileUrlOrUrn parameter",
+  "code": "MISSING_PARAMETER"
 }
 ```
 
 ```json 401 Unauthorized
 {
-  "error": "Invalid API key"
+  "error": "Invalid API key",
+  "code": "INVALID_API_KEY"
+}
+```
+
+```json 404 Not Found
+{
+  "error": "Unable to find company slug from urn",
+  "code": "COMPANY_NOT_FOUND"
 }
 ```
 
 ```json 429 Too Many Requests
 {
-  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal.",
+  "code": "QUOTA_EXHAUSTED"
 }
 ```
 
 ```json 500 Internal Server Error
 {
-  "error": "Failed to fetch LinkedIn data"
+  "error": "Internal server error",
+  "code": "INTERNAL_ERROR"
+}
+```
+
+```json 503 Service Unavailable
+{
+  "error": "Service temporarily unable to serve this request. Please retry.",
+  "code": "SERVICE_UNAVAILABLE"
 }
 ```
 </ResponseExample>
+
+## Errors
+
+See [Error Handling](/concepts/error-handling) for the full list of error codes and recommended handling.
+
+- `400` — `MISSING_PARAMETER` / `INVALID_URN`
+- `401` — `INVALID_API_KEY`
+- `404` — `COMPANY_NOT_FOUND`
+- `429` — `RATE_LIMITED` / `QUOTA_EXHAUSTED`
+- `500` — `INTERNAL_ERROR`
+- `503` — `SERVICE_UNAVAILABLE`
 
 ## Notes
 

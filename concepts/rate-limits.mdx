@@ -68,19 +68,24 @@ Total credits allowed per month based on your plan:
 
 ### 429 Too Many Requests
 
-You'll receive this error in two scenarios:
+You'll receive this error in two scenarios. **Branch on the `code` field** to
+tell them apart — the HTTP status is identical:
 
-**Per-second limit exceeded:**
+**Per-second limit exceeded** (`code: "RATE_LIMITED"`) — back off and retry,
+honoring the `Retry-After` header (seconds):
 ```json
 {
-  "error": "Rate limit exceeded. Try again later."
+  "error": "Rate limit exceeded. Try again later.",
+  "code": "RATE_LIMITED"
 }
 ```
 
-**Monthly quota exceeded:**
+**Monthly quota exceeded** (`code: "QUOTA_EXHAUSTED"`) — upgrade your plan or
+wait for renewal; retrying won't help until then:
 ```json
 {
-  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal.",
+  "code": "QUOTA_EXHAUSTED"
 }
 ```
 
@@ -335,7 +340,8 @@ For real-time applications making frequent requests:
 
 ```json
 {
-  "error": "Rate limit exceeded. Try again later."
+  "error": "Rate limit exceeded. Try again later.",
+  "code": "RATE_LIMITED"
 }
 ```
 
@@ -350,7 +356,8 @@ For real-time applications making frequent requests:
 
 ```json
 {
-  "error": "Quota exceeded. Upgrade your plan or wait for renewal."
+  "error": "Quota exceeded. Upgrade your plan or wait for renewal.",
+  "code": "QUOTA_EXHAUSTED"
 }
 ```
 
