@@ -239,10 +239,10 @@
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "LinkedIn profile URL or URN",
+            "description": "The LinkedIn profile to fetch. Accepts the public identifier (slug, recommended — e.g. `williamhgates`), a full profile URL (e.g. `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored), or a profile URN (e.g. `urn:li:fsd_profile:ACoAAA8BYqEB...`). The slug is the last path segment of a profile URL — pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
-              "example": "https://www.linkedin.com/in/username"
+              "example": "williamhgates"
             }
           },
           {
@@ -584,10 +584,10 @@
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "LinkedIn profile URL or URN",
+            "description": "The LinkedIn profile to fetch. Accepts the public identifier (slug, recommended — e.g. `williamhgates`), a full profile URL (e.g. `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored), or a profile URN (e.g. `urn:li:fsd_profile:ACoAAA8BYqEB...`). The slug is the last path segment of a profile URL — pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
-              "example": "https://www.linkedin.com/in/username"
+              "example": "williamhgates"
             }
           }
         ],
@@ -945,10 +945,10 @@
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "LinkedIn profile URL or URN",
+            "description": "The LinkedIn profile to fetch. Accepts the public identifier (slug, recommended — e.g. `williamhgates`), a full profile URL (e.g. `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored), or a profile URN (e.g. `urn:li:fsd_profile:ACoAAA8BYqEB...`). The slug is the last path segment of a profile URL — pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
-              "example": "https://www.linkedin.com/in/username"
+              "example": "williamhgates"
             }
           },
           {
