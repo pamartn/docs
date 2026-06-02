@@ -239,10 +239,10 @@
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "The LinkedIn profile to fetch. Accepts the public identifier (slug, recommended — e.g. `williamhgates`), a full profile URL (e.g. `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored), or a profile URN (e.g. `urn:li:fsd_profile:ACoAAA8BYqEB...`). The slug is the last path segment of a profile URL — pass just the slug, not the `/in/` prefix.",
+            "description": "The LinkedIn profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
-              "example": "williamhgates"
+              "example": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc"
             }
           },
           {
@@ -584,10 +584,10 @@
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "The LinkedIn profile to fetch. Accepts the public identifier (slug, recommended — e.g. `williamhgates`), a full profile URL (e.g. `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored), or a profile URN (e.g. `urn:li:fsd_profile:ACoAAA8BYqEB...`). The slug is the last path segment of a profile URL — pass just the slug, not the `/in/` prefix.",
+            "description": "The LinkedIn profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
-              "example": "williamhgates"
+              "example": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc"
             }
           }
         ],
@@ -945,10 +945,10 @@
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "The LinkedIn profile to fetch. Accepts the public identifier (slug, recommended — e.g. `williamhgates`), a full profile URL (e.g. `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored), or a profile URN (e.g. `urn:li:fsd_profile:ACoAAA8BYqEB...`). The slug is the last path segment of a profile URL — pass just the slug, not the `/in/` prefix.",
+            "description": "The LinkedIn profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
-              "example": "williamhgates"
+              "example": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc"
             }
           },
           {

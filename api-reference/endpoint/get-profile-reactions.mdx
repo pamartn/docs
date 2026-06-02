@@ -23,9 +23,9 @@ X-API-Key: your-api-key-here
 <ParamField query="profileUrlOrUrn" type="string" required>
   The LinkedIn profile whose reactions to fetch. Accepts any of:
 
-  - **Public identifier (slug)**, recommended. Example: `williamhgates`
+  - **Profile URN**, recommended for consistency: a profile's public identifier (slug) can change over time, the URN does not. Example: `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`
+  - **Public identifier (slug)**, also fine. Example: `williamhgates`
   - **Profile URL**. Example: `https://www.linkedin.com/in/williamhgates` (a trailing slash makes no difference)
-  - **Profile URN**. Example: `urn:li:fsd_profile:ACoAAA8BYqEB...`
 
   The slug is the last path segment of a profile URL (`linkedin.com/in/<slug>`). Pass just the slug, not the `/in/` prefix.
 </ParamField>
