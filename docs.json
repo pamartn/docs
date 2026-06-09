@@ -51,12 +51,6 @@
           "api-reference/endpoint/get-profile",
           "api-reference/endpoint/get-profile-reactions"
         ]
-      },
-      {
-        "group": "Search",
-        "pages": [
-          "api-reference/endpoint/get-search"
-        ]
       }
     ],
     "anchors": [
