@@ -31,7 +31,7 @@ endpoint, top-level fields such as `creditsNeeded`) with extra context.
 |---|---|---|---|
 | 400 | `MISSING_PARAMETER` | A required parameter is absent | Add the parameter and retry |
 | 400 | `INVALID_PARAMETER` | A parameter value is invalid | Fix the value and retry |
-| 400 | `INVALID_URN` | A LinkedIn URL/URN could not be parsed | Check the URL/URN format |
+| 400 | `INVALID_URN` | A professional URL/URN could not be parsed | Check the URL/URN format |
 | 401 | `UNAUTHENTICATED` | No `X-API-Key` header was sent | Send your API key |
 | 401 | `INVALID_API_KEY` | The API key is unknown or revoked | Check your key in the dashboard |
 | 403 | `FORBIDDEN` | Access to this resource is not allowed | — |
@@ -41,7 +41,7 @@ endpoint, top-level fields such as `creditsNeeded`) with extra context.
 | 429 | `RATE_LIMITED` | Per-second request rate exceeded | Back off, honor `Retry-After` |
 | 429 | `QUOTA_EXHAUSTED` | Monthly credit quota exhausted | Upgrade or wait for renewal |
 | 500 | `INTERNAL_ERROR` | An unexpected bug on our side | Retry with backoff; contact support if it persists |
-| 502 | `UPSTREAM_ERROR` | A genuine LinkedIn-side failure | Retry with backoff |
+| 502 | `UPSTREAM_ERROR` | A genuine upstream service failure | Retry with backoff |
 | 503 | `SERVICE_UNAVAILABLE` | **Our** API is temporarily out of capacity | Retry with backoff, honor `Retry-After` |
 | 504 | `UPSTREAM_TIMEOUT` | An upstream request timed out | Retry with backoff |
 
@@ -50,7 +50,7 @@ endpoint, top-level fields such as `creditsNeeded`) with extra context.
 ### 400 Bad Request
 
 The request itself is malformed — a missing parameter (`MISSING_PARAMETER`), an
-invalid value (`INVALID_PARAMETER`), or an unparseable LinkedIn URL/URN
+invalid value (`INVALID_PARAMETER`), or an unparseable professional URL/URN
 (`INVALID_URN`).
 
 ```json
@@ -72,7 +72,7 @@ The `X-API-Key` header is missing (`UNAUTHENTICATED`) or invalid
 
 ### 404 Not Found
 
-We reached LinkedIn successfully, but the requested profile, post, or company
+We reached the service successfully, but the requested profile, post, or company
 genuinely does not exist.
 
 ```json
@@ -104,7 +104,7 @@ Two distinct situations share this status. **Branch on `code`:**
 
 **Our** API is temporarily unable to serve your request — we're at capacity or
 overloaded. This is on our side. It is **not** your request's fault and **not**
-a LinkedIn outage.
+an upstream service outage.
 
 ```json
 { "error": "Service temporarily unable to serve this request. Please retry.", "code": "SERVICE_UNAVAILABLE" }
@@ -126,7 +126,7 @@ An unexpected bug occurred in our API.
 ### 502 / 504 Upstream Errors
 
 `UPSTREAM_ERROR` (502) and `UPSTREAM_TIMEOUT` (504) indicate a genuine failure or
-timeout on LinkedIn's side (as opposed to our capacity, which is `503`). Retry
+timeout on the upstream service's side (as opposed to our capacity, which is `503`). Retry
 with backoff.
 
 ## Error Handling Examples

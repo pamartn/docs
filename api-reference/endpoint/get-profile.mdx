@@ -1,7 +1,7 @@
 ---
 title: "Get Profile"
 openapi: "GET /api/v1/profile"
-description: "Get detailed information about a LinkedIn profile"
+description: "Get detailed information about a professional profile"
 ---
 
 ## Endpoint
@@ -21,7 +21,7 @@ X-API-Key: your-api-key-here
 ## Parameters
 
 <ParamField query="profileUrlOrUrn" type="string" required>
-  The LinkedIn profile to fetch. Accepts any of:
+  The professional profile to fetch. Accepts any of:
 
   - **Profile URN**, recommended for consistency: a profile's public identifier (slug) can change over time, the URN does not. Example: `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`
   - **Public identifier (slug)**, also fine. Example: `williamhgates`
@@ -33,11 +33,11 @@ X-API-Key: your-api-key-here
 ## Response
 
 <ResponseField name="profile" type="object">
-  LinkedIn profile information
+  Professional profile information
 
 <Expandable title="Profile object">
   <ResponseField name="id" type="string">
-    LinkedIn profile URN (unique identifier)
+    Professional profile URN (unique identifier)
   </ResponseField>
   
   <ResponseField name="firstName" type="string">
@@ -69,11 +69,11 @@ X-API-Key: your-api-key-here
   </ResponseField>
 
   <ResponseField name="publicIdentifier" type="string">
-    LinkedIn public identifier (slug), e.g. "williamhgates"
+    Public identifier (slug), e.g. "williamhgates"
   </ResponseField>
 
   <ResponseField name="profileId" type="string">
-    LinkedIn member identifier, e.g. "ACoAAA8BYqEBCGLg_vT..."
+    Member identifier, e.g. "ACoAAA8BYqEBCGLg_vT..."
   </ResponseField>
 
   <ResponseField name="countryCode" type="string">
@@ -89,7 +89,7 @@ X-API-Key: your-api-key-here
   </ResponseField>
 
   <ResponseField name="geoUrn" type="string">
-    LinkedIn geo URN, e.g. "urn:li:fsd_geo:104116203"
+    Geo URN, e.g. "urn:li:fsd_geo:104116203"
   </ResponseField>
 
   <ResponseField name="connectionType" type="string">
@@ -105,11 +105,11 @@ X-API-Key: your-api-key-here
   </ResponseField>
 
   <ResponseField name="companyPublicId" type="string">
-    Current company LinkedIn slug, e.g. "gates-foundation"
+    Current company public identifier slug, e.g. "gates-foundation"
   </ResponseField>
 
   <ResponseField name="companyLinkedinUrl" type="string">
-    Current company LinkedIn URL
+    Current company profile URL
   </ResponseField>
 
   <ResponseField name="followerCount" type="number">
@@ -121,19 +121,19 @@ X-API-Key: your-api-key-here
   </ResponseField>
 
   <ResponseField name="creator" type="boolean">
-    Whether the profile has LinkedIn Creator mode enabled
+    Whether the profile has Creator mode enabled
   </ResponseField>
 
   <ResponseField name="influencer" type="boolean">
-    Whether the profile is a LinkedIn Influencer
+    Whether the profile is an influencer
   </ResponseField>
 
   <ResponseField name="premium" type="boolean">
-    Whether the profile has a LinkedIn Premium subscription
+    Whether the profile has a Premium subscription
   </ResponseField>
 
   <ResponseField name="isVerified" type="boolean">
-    Whether the profile has a LinkedIn verification badge
+    Whether the profile has a verification badge
   </ResponseField>
 
   <ResponseField name="creatorInfo" type="object">
@@ -195,7 +195,7 @@ X-API-Key: your-api-key-here
           </ResponseField>
 
           <ResponseField name="url" type="string">
-            Company LinkedIn URL
+            Company profile URL
           </ResponseField>
 
           <ResponseField name="logo" type="string">
@@ -235,7 +235,7 @@ X-API-Key: your-api-key-here
       </ResponseField>
 
       <ResponseField name="schoolUrl" type="string">
-        School LinkedIn URL
+        School profile URL
       </ResponseField>
 
       <ResponseField name="timePeriod" type="object">
@@ -508,7 +508,7 @@ See [Error Handling](/concepts/error-handling) for the full list of error codes 
 </Info>
 
 <Warning>
-  Profile data is fetched in real-time from LinkedIn. Response times may vary.
+  Profile data is fetched in real-time from professional data sources. Response times may vary.
 </Warning>
 
 <Tip>
@@ -519,10 +519,10 @@ See [Error Handling](/concepts/error-handling) for the full list of error codes 
 
 <CardGroup cols={2}>
   <Card title="Lead enrichment" icon="user-plus">
-    Enhance your CRM with up-to-date LinkedIn profile data
+    Enhance your CRM with up-to-date professional profile data
   </Card>
   <Card title="Recruitment" icon="briefcase">
-    Build candidate profiles from LinkedIn data
+    Build candidate profiles from professional data
   </Card>
   <Card title="Research" icon="magnifying-glass">
     Analyze professional backgrounds and career paths

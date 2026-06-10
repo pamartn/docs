@@ -1,7 +1,7 @@
 ---
 title: "Get Post Reactions"
 openapi: "GET /api/v1/post/reactions"
-description: "Fetch reactions on a LinkedIn post with reactor profile information"
+description: "Fetch reactions on a professional post with reactor profile information"
 ---
 
 ## Endpoint
@@ -21,7 +21,7 @@ X-API-Key: your-api-key-here
 ## Parameters
 
 <ParamField query="postUrlOrUrn" type="string" required>
-  LinkedIn post URL or URN.
+  Professional post URL or URN.
 
   Examples:
   - `https://www.linkedin.com/posts/username_some-post-slug-1234567890-abcd`
@@ -58,7 +58,7 @@ X-API-Key: your-api-key-here
 
     <Expandable title="Actor object">
       <ResponseField name="urn" type="string" required>
-        LinkedIn profile URN of the reactor
+        Professional profile URN of the reactor
       </ResponseField>
 
       <ResponseField name="name" type="string" required>
@@ -70,7 +70,7 @@ X-API-Key: your-api-key-here
       </ResponseField>
 
       <ResponseField name="profileUrl" type="string" required>
-        LinkedIn profile URL of the reactor
+        Professional profile URL of the reactor
       </ResponseField>
 
       <ResponseField name="profilePictureUrl" type="string" required>
@@ -281,5 +281,5 @@ async function fetchAllReactions(postUrlOrUrn) {
 </Info>
 
 <Tip>
-  You can pass either a LinkedIn post URL (e.g. `https://www.linkedin.com/posts/...`) or a post URN (e.g. `urn:li:activity:...`). When a URL is provided, the API automatically resolves it to the correct activity URN.
+  You can pass either a professional post URL (e.g. `https://www.linkedin.com/posts/...`) or a post URN (e.g. `urn:li:activity:...`). When a URL is provided, the API automatically resolves it to the correct activity URN.
 </Tip>

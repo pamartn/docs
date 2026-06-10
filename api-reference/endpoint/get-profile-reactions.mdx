@@ -1,7 +1,7 @@
 ---
 title: "Get Profile Reactions"
 openapi: "GET /api/v1/profile/reactions"
-description: "Fetch posts that a LinkedIn profile has reacted to"
+description: "Fetch posts that a professional profile has reacted to"
 ---
 
 ## Endpoint
@@ -21,7 +21,7 @@ X-API-Key: your-api-key-here
 ## Parameters
 
 <ParamField query="profileUrlOrUrn" type="string" required>
-  The LinkedIn profile whose reactions to fetch. Accepts any of:
+  The professional profile whose reactions to fetch. Accepts any of:
 
   - **Profile URN**, recommended for consistency: a profile's public identifier (slug) can change over time, the URN does not. Example: `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`
   - **Public identifier (slug)**, also fine. Example: `williamhgates`
@@ -99,7 +99,7 @@ X-API-Key: your-api-key-here
         
         <Expandable title="Profile object">
           <ResponseField name="urn" type="string" required>
-            LinkedIn profile URN of the post author
+            Professional profile URN of the post author
           </ResponseField>
           
           <ResponseField name="name" type="string" required>
@@ -111,7 +111,7 @@ X-API-Key: your-api-key-here
           </ResponseField>
           
           <ResponseField name="url" type="string" required>
-            LinkedIn profile URL of the post author
+            Professional profile URL of the post author
           </ResponseField>
           
           <ResponseField name="imageUrl" type="string" required>
@@ -369,7 +369,7 @@ async function fetchAllReactions(profileUrl) {
 
 ## Reaction Types
 
-| Value | LinkedIn Label | Description |
+| Value | Platform Label | Description |
 |-------|---------------|-------------|
 | `LIKE` | Like | Standard like reaction |
 | `EMPATHY` | Love | Heart/love reaction |

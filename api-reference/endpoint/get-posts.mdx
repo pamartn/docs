@@ -1,7 +1,7 @@
 ---
 title: "Get Posts"
 openapi: "GET /api/v1/posts"
-description: "Fetch posts from a LinkedIn profile with engagement metrics"
+description: "Fetch posts from a professional profile with engagement metrics"
 ---
 
 ## Endpoint
@@ -21,7 +21,7 @@ X-API-Key: your-api-key-here
 ## Parameters
 
 <ParamField query="profileUrlOrUrn" type="string" required>
-  LinkedIn profile URL or URN.
+  Professional profile URL or URN.
   
   Examples:
   - `https://www.linkedin.com/in/username`
@@ -39,7 +39,7 @@ X-API-Key: your-api-key-here
 ## Response
 
 <ResponseField name="posts" type="array">
-  Array of LinkedIn posts
+  Array of professional posts
 
 <Expandable title="Post object">
   <ResponseField name="id" type="string">
@@ -47,7 +47,7 @@ X-API-Key: your-api-key-here
   </ResponseField>
 
   <ResponseField name="shareUrn" type="string">
-    Share URN of the post (`urn:li:share:...` or `urn:li:ugcPost:...` depending on post type). References the same post as `id` but in a different LinkedIn URN namespace.
+    Share URN of the post (`urn:li:share:...` or `urn:li:ugcPost:...` depending on post type). References the same post as `id` but in a different URN namespace.
   </ResponseField>
   
   <ResponseField name="content" type="string">
@@ -87,7 +87,7 @@ X-API-Key: your-api-key-here
     
     <Expandable title="Profile object">
       <ResponseField name="urn" type="string" required>
-        LinkedIn profile URN of the post author
+        Professional profile URN of the post author
       </ResponseField>
       
       <ResponseField name="name" type="string" required>
@@ -99,7 +99,7 @@ X-API-Key: your-api-key-here
       </ResponseField>
       
       <ResponseField name="url" type="string" required>
-        LinkedIn profile URL of the post author
+        Professional profile URL of the post author
       </ResponseField>
       
       <ResponseField name="imageUrl" type="string" required>

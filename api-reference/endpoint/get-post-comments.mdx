@@ -1,7 +1,7 @@
 ---
 title: "Get Post Comments"
 openapi: "GET /api/v1/post/comments"
-description: "Fetch comments from a LinkedIn post with author information and replies"
+description: "Fetch comments from a professional post with author information and replies"
 ---
 
 ## Endpoint
@@ -21,7 +21,7 @@ X-API-Key: your-api-key-here
 ## Parameters
 
 <ParamField query="postUrlOrUrn" type="string" required>
-  LinkedIn post URL or URN.
+  Professional post URL or URN.
 
   Examples:
   - `https://www.linkedin.com/posts/username_some-post-slug-1234567890-abcd`
@@ -50,7 +50,7 @@ X-API-Key: your-api-key-here
 ## Response
 
 <ResponseField name="comments" type="array">
-  Array of LinkedIn comments
+  Array of professional comments
 
 <Expandable title="Comment object">
   <ResponseField name="urn" type="string">
@@ -74,7 +74,7 @@ X-API-Key: your-api-key-here
     
     <Expandable title="Author object">
       <ResponseField name="id" type="string" required>
-        LinkedIn profile URN of the comment author
+        Professional profile URN of the comment author
       </ResponseField>
       
       <ResponseField name="name" type="string" required>
@@ -90,7 +90,7 @@ X-API-Key: your-api-key-here
       </ResponseField>
       
       <ResponseField name="profileUrl" type="string" required>
-        LinkedIn profile URL of the comment author
+        Professional profile URL of the comment author
       </ResponseField>
     </Expandable>
   </ResponseField>

@@ -3,7 +3,7 @@
   "info": {
     "title": "Fetchin API",
     "version": "1.0.0",
-    "description": "Public LinkedIn data API for fetching posts and profile information"
+    "description": "Public B2B data API for fetching posts and profile information"
   },
   "servers": [
     {
@@ -117,7 +117,7 @@
         }
       },
       "NotFound": {
-        "description": "Not found - the request was served successfully but the requested LinkedIn entity does not exist.",
+        "description": "Not found - the request was served successfully but the requested professional entity does not exist.",
         "content": {
           "application/json": {
             "schema": {
@@ -179,7 +179,7 @@
         }
       },
       "ServiceUnavailable": {
-        "description": "Service unavailable - our API is temporarily unable to serve this request (capacity exhausted or overloaded). This is on our side, not yours and not a LinkedIn outage. Retry with backoff, honoring the Retry-After header.",
+        "description": "Service unavailable - our API is temporarily unable to serve this request (capacity exhausted or overloaded). This is on our side, not yours and not an upstream service outage. Retry with backoff, honoring the Retry-After header.",
         "headers": {
           "Retry-After": {
             "description": "Number of seconds to wait before retrying the request.",
@@ -232,14 +232,14 @@
   "paths": {
     "/api/v1/posts": {
       "get": {
-        "summary": "Get LinkedIn posts from a profile",
-        "description": "Fetch posts from a LinkedIn profile using either profile URL or URN",
+        "summary": "Get posts from a profile",
+        "description": "Fetch posts from a professional profile using either profile URL or URN",
         "parameters": [
           {
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "The LinkedIn profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
+            "description": "The professional profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
               "example": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc"
@@ -300,7 +300,7 @@
                       },
                       "content": {
                         "type": "string",
-                        "example": "This is a LinkedIn post content..."
+                        "example": "This is a post content..."
                       },
                       "date": {
                         "type": "string",
@@ -386,14 +386,14 @@
     },
     "/api/v1/post/comments": {
       "get": {
-        "summary": "Get comments from a LinkedIn post",
-        "description": "Fetch comments from a LinkedIn post including author information and replies (subcomments)",
+        "summary": "Get comments from a post",
+        "description": "Fetch comments from a professional post including author information and replies (subcomments)",
         "parameters": [
           {
             "name": "postUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "LinkedIn post URL or URN",
+            "description": "Professional post URL or URN",
             "schema": {
               "type": "string",
               "example": "https://www.linkedin.com/posts/username_post-slug-1234567890-abcd"
@@ -577,14 +577,14 @@
     },
     "/api/v1/profile": {
       "get": {
-        "summary": "Get LinkedIn profile information",
-        "description": "Fetch profile details from LinkedIn using profile URL or URN",
+        "summary": "Get profile information",
+        "description": "Fetch profile details using profile URL or URN",
         "parameters": [
           {
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "The LinkedIn profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
+            "description": "The professional profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
               "example": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc"
@@ -601,7 +601,7 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "description": "LinkedIn profile URN (unique identifier)",
+                      "description": "Profile URN (unique identifier)",
                       "example": "urn:li:fsd_profile:ACoAAABCDEF"
                     },
                     "firstName": {
@@ -695,7 +695,7 @@
                               },
                               "url": {
                                 "type": "string",
-                                "description": "Company LinkedIn URL"
+                                "description": "Company profile URL"
                               },
                               "logo": {
                                 "type": "string",
@@ -737,7 +737,7 @@
                           },
                           "schoolUrl": {
                             "type": "string",
-                            "description": "School LinkedIn URL"
+                            "description": "School profile URL"
                           },
                           "timePeriod": {
                             "type": "object",
@@ -824,11 +824,11 @@
                     },
                     "publicIdentifier": {
                       "type": "string",
-                      "description": "LinkedIn public identifier (slug)"
+                      "description": "Public identifier (slug)"
                     },
                     "profileId": {
                       "type": "string",
-                      "description": "LinkedIn member identifier"
+                      "description": "Member identifier"
                     },
                     "countryCode": {
                       "type": "string",
@@ -844,7 +844,7 @@
                     },
                     "geoUrn": {
                       "type": "string",
-                      "description": "LinkedIn geo URN"
+                      "description": "Geo URN"
                     },
                     "connectionType": {
                       "type": "string",
@@ -880,11 +880,11 @@
                     },
                     "companyPublicId": {
                       "type": "string",
-                      "description": "Current company LinkedIn slug"
+                      "description": "Current company public identifier slug"
                     },
                     "companyLinkedinUrl": {
                       "type": "string",
-                      "description": "Current company LinkedIn URL"
+                      "description": "Current company profile URL"
                     },
                     "followerCount": {
                       "type": "number",
@@ -900,11 +900,11 @@
                     },
                     "influencer": {
                       "type": "boolean",
-                      "description": "Whether the profile is a LinkedIn Influencer"
+                      "description": "Whether the profile is an influencer"
                     },
                     "premium": {
                       "type": "boolean",
-                      "description": "Whether the profile has LinkedIn Premium"
+                      "description": "Whether the profile has Premium"
                     },
                     "isVerified": {
                       "type": "boolean",
@@ -938,14 +938,14 @@
     },
     "/api/v1/profile/reactions": {
       "get": {
-        "summary": "Get posts a LinkedIn profile has reacted to",
-        "description": "Fetch posts that a LinkedIn profile has reacted to (liked, loved, etc.) with the reaction type and full post details. The `post` object in each reaction has the same shape as items returned by `GET /api/v1/posts`.",
+        "summary": "Get posts a profile has reacted to",
+        "description": "Fetch posts that a professional profile has reacted to (liked, loved, etc.) with the reaction type and full post details. The `post` object in each reaction has the same shape as items returned by `GET /api/v1/posts`.",
         "parameters": [
           {
             "name": "profileUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "The LinkedIn profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
+            "description": "The professional profile to fetch. Accepts a profile URN (recommended for consistency, since a profile's public identifier can change over time while the URN does not; example `urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc`), a public identifier/slug (also fine; example `williamhgates`), or a full profile URL (example `https://www.linkedin.com/in/williamhgates`; a trailing slash is ignored). The slug is the last path segment of a profile URL, so pass just the slug, not the `/in/` prefix.",
             "schema": {
               "type": "string",
               "example": "urn:li:fsd_profile:ACoAAA8BYqEBCGLg_vT_ca6mMEqkpp9nVffJ3hc"
@@ -1025,7 +1025,7 @@
                               },
                               "content": {
                                 "type": "string",
-                                "example": "This is a LinkedIn post content..."
+                                "example": "This is a post content..."
                               },
                               "date": {
                                 "type": "string",
@@ -1123,14 +1123,14 @@
     },
     "/api/v1/post/reactions": {
       "get": {
-        "summary": "Get reactions on a LinkedIn post",
-        "description": "Fetch who reacted to a specific LinkedIn post, including their reaction type and profile information.",
+        "summary": "Get reactions on a post",
+        "description": "Fetch who reacted to a specific professional post, including their reaction type and profile information.",
         "parameters": [
           {
             "name": "postUrlOrUrn",
             "in": "query",
             "required": true,
-            "description": "LinkedIn post URL or URN",
+            "description": "Professional post URL or URN",
             "schema": {
               "type": "string",
               "example": "https://www.linkedin.com/posts/username_post-slug-1234567890-abcd"
