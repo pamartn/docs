@@ -7,8 +7,8 @@ description: "Understanding API rate limits and throttling"
 
 Fetchin implements two types of rate limiting to ensure fair usage and system stability:
 
-1. **Per-second rate limit**: Configurable per plan (default: 20 requests per second)
-2. **Monthly quota**: Based on your plan (100 for Trial, custom for Enterprise)
+1. **Per-second rate limit**: Configurable per plan (default: 5 requests per second)
+2. **Monthly quota**: Based on your plan (1,000 for Trial, custom for Enterprise)
 
 ### Rate Limit Structure
 
@@ -16,7 +16,7 @@ Fetchin implements two types of rate limiting to ensure fair usage and system st
   <Card title="Per-Second Limit" icon="clock">
     **Plan-based**
     
-    Trial: 20 requests/second
+    Trial: 5 requests/second
     Enterprise: Custom RPS
   </Card>
   <Card title="Monthly Quota" icon="calendar">
@@ -29,7 +29,7 @@ Fetchin implements two types of rate limiting to ensure fair usage and system st
 
 ## Per-Second Rate Limit
 
-Your per-second rate limit depends on your plan. Trial plans have a default of **20 requests per second**, while Enterprise plans can have custom limits.
+Your per-second rate limit depends on your plan. Trial plans have a default of **5 requests per second**, while Enterprise plans can have custom limits.
 
 ### How It Works
 
@@ -38,16 +38,16 @@ Your per-second rate limit depends on your plan. Trial plans have a default of *
 - The limit is per API key and applies across all endpoints
 - Your specific RPS limit is visible in your dashboard
 
-### Example (with 20 RPS limit)
+### Example (with 5 RPS limit)
 
 ```
-Second 1: 20 requests ✅ (all succeed)
-Second 1: 21st request ❌ (429 error)
-Second 2: 20 requests ✅ (window slides, all succeed)
+Second 1: 5 requests ✅ (all succeed)
+Second 1: 6th request ❌ (429 error)
+Second 2: 5 requests ✅ (window slides, all succeed)
 ```
 
 <Warning>
-  Your RPS limit applies across ALL your requests. If you make 20 profile requests in one second (with a 20 RPS limit), you cannot make any posts requests until the window slides.
+  Your RPS limit applies across ALL your requests. If you make 5 profile requests in one second (with a 5 RPS limit), you cannot make any posts requests until the window slides.
 </Warning>
 
 ## Monthly Quota Limiting
@@ -94,12 +94,12 @@ wait for renewal; retrying won't help until then:
 Each API response includes rate limit headers:
 
 ```
-X-RateLimit-Limit: 20
-X-RateLimit-Remaining: 7
+X-RateLimit-Limit: 5
+X-RateLimit-Remaining: 3
 X-RateLimit-Reset: 1704067201
 ```
 
-- `X-RateLimit-Limit`: Requests allowed per second (20)
+- `X-RateLimit-Limit`: Requests allowed per second (5)
 - `X-RateLimit-Remaining`: Requests remaining this second
 - `X-RateLimit-Reset`: Unix timestamp when limit resets
 
@@ -115,13 +115,13 @@ X-RateLimit-Reset: 1704067201
 
 ### 1. Respect Your RPS Limit
 
-Space out your requests to stay under your rate limit (default: 20 per second for Trial plans):
+Space out your requests to stay under your rate limit (default: 5 per second for Trial plans):
 
 <CodeGroup>
 
 ```javascript JavaScript
 async function fetchMultipleProfiles(profileUrls, apiKey) {
-  const delay = 50; // 50ms = 20 req/s max
+  const delay = 200; // 200ms = 5 req/s max
   const results = [];
   
   for (const url of profileUrls) {
@@ -144,7 +144,7 @@ import time
 import requests
 
 def fetch_multiple_profiles(profile_urls, api_key):
-    delay = 0.05  # 50ms = 20 req/s max
+    delay = 0.2  # 200ms = 5 req/s max
     results = []
     
     for url in profile_urls:
@@ -210,7 +210,7 @@ Limit concurrent requests to respect the rate limit:
 
 ```javascript
 class RateLimiter {
-  constructor(maxPerSecond = 20) {
+  constructor(maxPerSecond = 5) {
     this.maxPerSecond = maxPerSecond;
     this.queue = [];
     this.processing = 0;
@@ -238,7 +238,7 @@ class RateLimiter {
   }
 }
 
-const limiter = new RateLimiter(20);
+const limiter = new RateLimiter(5);
 
 await limiter.add(() => fetchProfile(url1));
 await limiter.add(() => fetchProfile(url2));
@@ -310,15 +310,15 @@ async function getCachedProfile(profileUrl, apiKey) {
 
 ### Batch Processing
 
-Processing 100 profiles at 20 req/s:
+Processing 100 profiles at 5 req/s:
 
 ```
-100 profiles ÷ 20 req/s = 5 seconds minimum
+100 profiles ÷ 5 req/s = 20 seconds minimum
 ```
 
 Add buffer time for network latency and processing:
 ```
-Estimated time: 6-8 seconds
+Estimated time: 22-25 seconds
 ```
 
 ### Real-Time Applications
